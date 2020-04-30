@@ -14,6 +14,13 @@ namespace ProyectoED1.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Index(FormCollection collection)
+        {
+            var option = collection["Option"];
+            return View();
+        }
+
         // GET: Hospital/Details/5
         public ActionResult Details(int id)
         {
