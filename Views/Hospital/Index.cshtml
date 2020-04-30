@@ -5,3 +5,9 @@
 
 <h2>Index</h2>
 
+@using (Html.BeginForm("Index", "Hospital", FormMethod.Post))
+{
+    <button type="submit" value="NewCase" name="Option">Añadir un caso sospechoso</button>
+    <br />
+    <button type="submit" value="PatientsList" name="Option">Lista de pacientes</button>
+}
