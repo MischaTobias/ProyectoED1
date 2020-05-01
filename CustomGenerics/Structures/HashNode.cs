@@ -11,6 +11,6 @@ namespace CustomGenerics.Structures
         public HashNode<T> Previous { get; set; }
         public HashNode<T> Next { get; set; }
         public T Value { get; set; }
-        public string Key { get; set; }
+        public int Key { get; set; }
     }
 }

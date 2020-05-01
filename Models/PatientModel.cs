@@ -13,10 +13,11 @@ namespace ProyectoED1.Models
         public string Municipality { get; set; }
         public string Symptoms { get; set; }
         public string InfectionDescription { get; set; }
-        public bool IsInfected { get; set; }
         public int CUI { get; set; }
         public int Age { get; set; }
         public int Priority { get; set; }
+        public char Status { get; set; }
+        public DateTime ArrivalDate { get; set; }
 
         public int CompareTo(object obj)
         {

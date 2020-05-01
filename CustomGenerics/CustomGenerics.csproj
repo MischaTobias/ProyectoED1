@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\AVLNode.cs" />
     <Compile Include="Structures\Hash.cs" />
     <Compile Include="Structures\HashNode.cs" />
     <Compile Include="Structures\PQNode.cs" />
