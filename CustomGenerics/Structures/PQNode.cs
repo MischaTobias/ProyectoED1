@@ -11,11 +11,11 @@ namespace CustomGenerics.Structures
         public PQNode<T> Father;
         public PQNode<T> RightSon;
         public PQNode<T> LeftSon;
-        public string Key;
+        public int Key;
         public int Priority;
         public DateTime DatePriority;
 
-        public PQNode(string key, DateTime Date, int priority)
+        public PQNode(int key, DateTime Date, int priority)
         {
             Key = key;
             DatePriority = Date;

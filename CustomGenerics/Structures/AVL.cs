@@ -14,7 +14,11 @@ namespace CustomGenerics.Structures
         {
             if (currentNode == null && currentNode == Root)
             {
+<<<<<<< HEAD
                 //currentNode = newNode;
+=======
+                currentNode = newNode;
+>>>>>>> aa354a1a13a557deabcb084d9e36b02363dce38a
                 Root = currentNode;
             }
             else if (comparison.Invoke(currentNode.Patient, newNode.Patient) < 0)
@@ -51,12 +55,20 @@ namespace CustomGenerics.Structures
             {
                 if (currentNode.LeftSon != null)
                 {
+<<<<<<< HEAD
                     currentNode.Patient = GetReplacementLeft(currentNode.LeftSon).Patient;
+=======
+                    currentNode.Patient = GetReplacementLeft(currentNode.LeftSon).Medicine;
+>>>>>>> aa354a1a13a557deabcb084d9e36b02363dce38a
                     Delete(currentNode.LeftSon, GetReplacementLeft(currentNode.LeftSon), comparison);
                 }
                 else if (currentNode.RightSon != null)
                 {
+<<<<<<< HEAD
                     currentNode.Patient = GetReplacementRight(currentNode.RightSon).Patient;
+=======
+                    currentNode.Patient = GetReplacementRight(currentNode.RightSon).Medicine;
+>>>>>>> aa354a1a13a557deabcb084d9e36b02363dce38a
                     Delete(currentNode.RightSon, GetReplacementRight(currentNode.RightSon), comparison);
                 }
                 else
