@@ -124,6 +124,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Models\Hospital.cs" />
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
