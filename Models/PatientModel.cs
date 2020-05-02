@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,16 +8,23 @@ namespace ProyectoED1.Models
 {
     public class PatientModel : IComparable
     {
+        [Display(Name = "Nombre")]
         public string Name { get; set; }
+        [Display(Name = "Apellido")]
         public string LastName { get; set; }
+        [Display(Name = "Departamento")]
         public string Department { get; set; }
+        [Display(Name = "Municipalidad")]
         public string Municipality { get; set; }
-        public string Symptoms { get; set; }
+        [Display(Name = "Síntomas")]
+        public string Symptoms { get; set; } 
+        [Display(Name = "Descripción del contagio")]
         public string InfectionDescription { get; set; }
         public int CUI { get; set; }
+        [Display(Name = "Edad")]
         public int Age { get; set; }
         public int Priority { get; set; }
-        public char Status { get; set; }
+        public bool IsInfected { get; set; }
         public DateTime ArrivalDate { get; set; }
 
         public int CompareTo(object obj)
@@ -24,10 +32,6 @@ namespace ProyectoED1.Models
             return this.Age.CompareTo(((PatientModel)obj).Age);
         }
 
-        public PatientModel()
-        {
-            PriorityAssignment();
-        }
         public void PriorityAssignment()
         {
             if (Age > 60)
@@ -75,5 +79,20 @@ namespace ProyectoED1.Models
                 }
             }
         }
+
+        public static Comparison<PatientModel> CompareByName = delegate (PatientModel patient1, PatientModel patient2)
+        {
+            return patient1.Name.CompareTo(patient2.Name);
+        };
+
+        public static Comparison<PatientModel> CompareByLastName = delegate (PatientModel patient1, PatientModel patient2)
+        {
+            return patient1.LastName.CompareTo(patient2.LastName);
+        };
+
+        public static Comparison<PatientModel> CompareByCUI = delegate (PatientModel patient1, PatientModel patient2)
+        {
+            return patient1.CUI.CompareTo(patient2.CUI);
+        };
     }
 }
