@@ -9,16 +9,13 @@ namespace CustomGenerics.Structures
     public class AVL<T> where T : IComparable
     {
         public AVLNode<T> Root;
+        private List<AVLNode<T>> ReturningList;
 
         public void Insert(AVLNode<T> currentNode, AVLNode<T> newNode, Comparison<T> comparison)
         {
             if (currentNode == null && currentNode == Root)
             {
-<<<<<<< HEAD
-                //currentNode = newNode;
-=======
                 currentNode = newNode;
->>>>>>> aa354a1a13a557deabcb084d9e36b02363dce38a
                 Root = currentNode;
             }
             else if (comparison.Invoke(currentNode.Patient, newNode.Patient) < 0)
@@ -55,20 +52,12 @@ namespace CustomGenerics.Structures
             {
                 if (currentNode.LeftSon != null)
                 {
-<<<<<<< HEAD
                     currentNode.Patient = GetReplacementLeft(currentNode.LeftSon).Patient;
-=======
-                    currentNode.Patient = GetReplacementLeft(currentNode.LeftSon).Medicine;
->>>>>>> aa354a1a13a557deabcb084d9e36b02363dce38a
                     Delete(currentNode.LeftSon, GetReplacementLeft(currentNode.LeftSon), comparison);
                 }
                 else if (currentNode.RightSon != null)
                 {
-<<<<<<< HEAD
                     currentNode.Patient = GetReplacementRight(currentNode.RightSon).Patient;
-=======
-                    currentNode.Patient = GetReplacementRight(currentNode.RightSon).Medicine;
->>>>>>> aa354a1a13a557deabcb084d9e36b02363dce38a
                     Delete(currentNode.RightSon, GetReplacementRight(currentNode.RightSon), comparison);
                 }
                 else
@@ -205,6 +194,25 @@ namespace CustomGenerics.Structures
             if (node.Father.Father == null)
             {
                 Root = node.Father;
+            }
+        }
+
+        public List<AVLNode<T>> GetList()
+        {
+            InOrder(Root);
+            return ReturningList;
+        }
+
+        private void InOrder(AVLNode<T> currentNode)
+        {
+            if (currentNode.LeftSon != null)
+            {
+                InOrder(currentNode.LeftSon);
+            }
+            ReturningList.Add(currentNode);
+            if (currentNode.RightSon != null)
+            {
+                InOrder(currentNode.RightSon);
             }
         }
     }
