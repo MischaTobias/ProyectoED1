@@ -60,5 +60,10 @@ namespace ProyectoED1.Controllers
                 return View("NewCase");
             }
         }
+
+        public ActionResult PatientsList()
+        {
+            return View();
+        }
     }
 }

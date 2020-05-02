@@ -9,6 +9,7 @@ namespace CustomGenerics.Structures
     public class AVL<T> where T : IComparable
     {
         public AVLNode<T> Root;
+        private List<AVLNode<T>> ReturningList;
 
         public void Insert(AVLNode<T> currentNode, AVLNode<T> newNode, Comparison<T> comparison)
         {
@@ -56,7 +57,6 @@ namespace CustomGenerics.Structures
                 }
                 else if (currentNode.RightSon != null)
                 {
-
                     currentNode.Patient = GetReplacementRight(currentNode.RightSon).Patient;
                     Delete(currentNode.RightSon, GetReplacementRight(currentNode.RightSon), comparison);
                 }
@@ -194,6 +194,25 @@ namespace CustomGenerics.Structures
             if (node.Father.Father == null)
             {
                 Root = node.Father;
+            }
+        }
+
+        public List<AVLNode<T>> GetList()
+        {
+            InOrder(Root);
+            return ReturningList;
+        }
+
+        private void InOrder(AVLNode<T> currentNode)
+        {
+            if (currentNode.LeftSon != null)
+            {
+                InOrder(currentNode.LeftSon);
+            }
+            ReturningList.Add(currentNode);
+            if (currentNode.RightSon != null)
+            {
+                InOrder(currentNode.RightSon);
             }
         }
     }
