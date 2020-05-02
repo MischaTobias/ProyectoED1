@@ -20,11 +20,12 @@ namespace ProyectoED1.Models
         public string Symptoms { get; set; } 
         [Display(Name = "Descripción del contagio")]
         public string InfectionDescription { get; set; }
-        public bool IsInfected { get; set; }
         public int CUI { get; set; }
         [Display(Name = "Edad")]
         public int Age { get; set; }
         public int Priority { get; set; }
+        public bool IsInfected { get; set; }
+        public DateTime ArrivalDate { get; set; }
 
         public int CompareTo(object obj)
         {

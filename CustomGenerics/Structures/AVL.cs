@@ -14,7 +14,7 @@ namespace CustomGenerics.Structures
         {
             if (currentNode == null && currentNode == Root)
             {
-                //currentNode = newNode;
+                currentNode = newNode;
                 Root = currentNode;
             }
             else if (comparison.Invoke(currentNode.Patient, newNode.Patient) < 0)
@@ -56,6 +56,7 @@ namespace CustomGenerics.Structures
                 }
                 else if (currentNode.RightSon != null)
                 {
+
                     currentNode.Patient = GetReplacementRight(currentNode.RightSon).Patient;
                     Delete(currentNode.RightSon, GetReplacementRight(currentNode.RightSon), comparison);
                 }
