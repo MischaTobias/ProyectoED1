@@ -88,6 +88,18 @@ namespace ProyectoED1.Controllers
                     Status = "Sospechoso"
                 };
                 newPatient.PriorityAssignment();
+                var structurePatient = new PatientStructure()
+                {
+                    Name = newPatient.Name,
+                    LastName = newPatient.LastName,
+                    CUI = newPatient.CUI,
+                    Status = newPatient.Status,
+                    Age = newPatient.Age,
+                    ArrivalDate = newPatient.ArrivalDate,
+                    Hospital = newPatient.Hospital,
+                    IsInfected = newPatient.IsInfected,
+                    Priority = newPatient.Priority
+                };
                 Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
                 //Generar paciente para AVL's
                 //Storage.Instance.PatientsByName.add(patient);

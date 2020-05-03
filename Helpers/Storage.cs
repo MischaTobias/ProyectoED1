@@ -22,9 +22,9 @@ namespace ProyectoED1.Helpers
 
         public Hash<PatientModel> PatientsHash = new Hash<PatientModel>();
         public Hash<Bed> BedHash = new Hash<Bed>();
-        public AVL<PatientModel> PatientsByName = new AVL<PatientModel>();
-        public AVL<PatientModel> PatientsByLastName = new AVL<PatientModel>();
-        public AVL<PatientModel> PatientsByCUI = new AVL<PatientModel>();
+        public AVL<PatientStructure> PatientsByName = new AVL<PatientStructure>();
+        public AVL<PatientStructure> PatientsByLastName = new AVL<PatientStructure>();
+        public AVL<PatientStructure> PatientsByCUI = new AVL<PatientStructure>();
         public List<string> HCapital = new List<string>();
         public List<string> HQuetzaltenango = new List<string>();
         public List<string> HPeten = new List<string>();
