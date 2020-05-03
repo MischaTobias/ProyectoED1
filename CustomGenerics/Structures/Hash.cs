@@ -139,5 +139,25 @@ namespace CustomGenerics.Structures
             }
             return returnList;
         }
+
+        public List<HashNode<T>> GetSortedList(Func<T,bool> predicate)
+        {
+            List<HashNode<T>> SortedList = new List<HashNode<T>>();
+            var currentNode = new HashNode<T>();
+            foreach (var task in TablaHash)
+            {
+                currentNode = task;
+                while (currentNode != null)
+                {
+                    if (predicate(currentNode.Value))
+                    {
+                        SortedList.Add(currentNode);
+                    }
+                    currentNode = currentNode.Next;
+                }
+            }
+            return SortedList;
+        }
+
     }
 }
