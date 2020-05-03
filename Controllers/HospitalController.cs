@@ -88,7 +88,7 @@ namespace ProyectoED1.Controllers
                     Status = "Sospechoso"
                 };
                 newPatient.PriorityAssignment();
-                Storage.Instance.PatitentsHash.Insert(newPatient, newPatient.CUI);
+                Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
                 //Generar paciente para AVL's
                 //Storage.Instance.PatientsByName.add(patient);
                 return RedirectToAction("Index");
@@ -130,7 +130,7 @@ namespace ProyectoED1.Controllers
 
         public ActionResult PatientsList()
         {
-            var patientsList = new List<PatientModel>;
+            var patientsList = new List<PatientModel>();
             foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
             {
                 patientsList.Add(patient.Value);
