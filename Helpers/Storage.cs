@@ -25,10 +25,10 @@ namespace ProyectoED1.Helpers
         public AVL<PatientStructure> PatientsByName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByLastName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByCUI = new AVL<PatientStructure>();
-        public List<string> HCapital = new List<string>();
-        public List<string> HQuetzaltenango = new List<string>();
-        public List<string> HPeten = new List<string>();
-        public List<string> HEscuintla = new List<string>();
-        public List<string> HOriente = new List<string>();
+        public Hospital HCapital = new Hospital();
+        public Hospital HQuetzaltenango = new Hospital();
+        public Hospital HPeten = new Hospital();
+        public Hospital HEscuintla = new Hospital();
+        public Hospital HOriente = new Hospital();
     }
 }

@@ -9,11 +9,11 @@ namespace CustomGenerics.Structures
     public class PriorityQueue<T> : ICloneable
     {
         public PQNode<T> Root;
-        public int TasksQuantity;
+        public int PatientsNumber;
 
         public PriorityQueue()
         {
-            TasksQuantity = 0;
+            PatientsNumber = 0;
         }
 
         public bool IsEmpty()
@@ -23,20 +23,20 @@ namespace CustomGenerics.Structures
 
         public bool IsFull()
         {
-            return TasksQuantity == 10 ? true : false;
+            return PatientsNumber == 10 ? true : false;
         }
 
-        public void AddTask(string key, DateTime date, int priority)
+        public void AddPatient(int key, DateTime date, int priority)
         {
             var newNode = new PQNode<T>(key, date, priority);
             if (IsEmpty())
             {
                 Root = newNode;
-                TasksQuantity = 1;
+                PatientsNumber = 1;
             }
             else
             {
-                TasksQuantity++;
+                PatientsNumber++;
                 var NewNodeFather = SearchLastNode(Root, 1);
                 if (NewNodeFather.LeftSon != null)
                 {
@@ -53,36 +53,6 @@ namespace CustomGenerics.Structures
 
             }
         }
-
-        //public void Insert(Node<T> currentNode, Node<T> newNode)
-        //{
-        //    if (currentNode.LeftSon == null)
-        //    {
-        //        newNode.Father = currentNode;
-        //        currentNode.LeftSon = newNode;
-        //        OrderDowntoUp(currentNode.LeftSon);
-
-        //    }
-        //    else if (currentNode.RightSon == null)
-        //    {
-        //        newNode.Father = currentNode;
-        //        currentNode.RightSon = newNode;
-        //        OrderDowntoUp(currentNode.RightSon);
-        //    }
-        //    else
-        //    {
-        //        if (Leaves > (flag1 + flag2)/2)
-        //        {
-        //            Insert(currentNode.RightSon, newNode);
-        //            flag1 = (flag1 + flag2) / 2;
-        //        }
-        //        else
-        //        {
-        //            Insert(currentNode.LeftSon, newNode);
-        //            flag2 = (flag1 + flag2) / 2;
-        //        }
-        //    }
-        //}
 
         private void OrderDowntoUp(PQNode<T> current)
         {
@@ -232,7 +202,7 @@ namespace CustomGenerics.Structures
             if (LastNode.Father == null)
             {
                 Root = null;
-                TasksQuantity--;
+                PatientsNumber--;
                 return LastNode;
             }
             else
@@ -247,14 +217,14 @@ namespace CustomGenerics.Structures
                 }
             }
             OrderUptoDown(Root);
-            TasksQuantity--;
+            PatientsNumber--;
             return FirstNode;
         }
         private PQNode<T> SearchLastNode(PQNode<T> current, int number)
         {
             try
             {
-                int previousn = TasksQuantity;
+                int previousn = PatientsNumber;
                 if (previousn == number)
                 {
                     return current;

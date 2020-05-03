@@ -19,6 +19,7 @@ namespace ProyectoED1.Models
         public string Hospital { get; set; }
         public string Status { get; set; }
         public bool IsInfected { get; set; }
+        [Display(Name = "Fecha de ingreso")]
         public DateTime ArrivalDate { get; set; }
 
         public int CompareTo(object obj)
