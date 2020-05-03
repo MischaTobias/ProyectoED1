@@ -8,9 +8,9 @@ namespace CustomGenerics.Structures
 {
     public class Hash<T> where T : IComparable
     {
-        HashNode<T>[] TablaHash = new HashNode<T>[50];
+        HashNode<T>[] TablaHash = new HashNode<T>[100];
 
-        public void Insert(T InsertV, string key)
+        public void Insert(T InsertV, int key)
         {
             HashNode<T> T1 = new HashNode<T>();
             T1.Value = InsertV;
@@ -33,7 +33,7 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public HashNode<T> Search(string searchedKey)
+        public HashNode<T> Search(int searchedKey)
         {
             int code = GetCode(searchedKey);
 
@@ -67,7 +67,7 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public void Delete(string searchedKey)
+        public void Delete(int searchedKey)
         {
             int code = GetCode(searchedKey);
 
@@ -110,39 +110,19 @@ namespace CustomGenerics.Structures
                 }
             }
         }
-
-        //public void Remove(string searchedKey)
-        //{
-        //    HashNode<T> TaskTR = Search(searchedKey);
-
-        //    if (TaskTR.Next != null)
-        //    {
-        //        TaskTR.Next.Previous = TaskTR.Previous;
-        //    }
-        //    if (TaskTR.Previous != null)
-        //    {
-        //        TaskTR.Previous.Next = TaskTR.Next;
-        //    }
-        //    if (TaskTR.Next == null && TaskTR.Previous == null)
-        //    {
-        //        TaskTR = null;
-        //    }
-        //}
-
-        private int GetCode(string Key)
+        private int GetCode(int Key)
         {
-            int _vowels = 0;
-            var vowels = new char[5] { 'a', 'e', 'i', 'o', 'u' };
-            foreach (var vowel in vowels)
+            string key = Key.ToString();
+            int length = key.Length;
+            int code = 0;
+            for (int i = 0; i < length; i++)
             {
-                if (Key.Contains(vowel))
-                {
-                    _vowels++;
-                }
+               code +=  Convert.ToInt32(key.Substring(i, 1));
             }
-            return (Key.Length + _vowels) * 11 % 50;
-        }
+            code = (code * 3) % 100;
+            return code;
 
+        }
         public List<HashNode<T>> GetTasksAsNodes()
         {
             var listOfTasks = new List<HashNode<T>>();
