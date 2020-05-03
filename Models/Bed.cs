@@ -9,6 +9,12 @@ namespace ProyectoED1.Models
     {
         public bool Availability { get; set; }
         public int Bedcode { get; set; }
-        public int Patient { get; set; }
+        public string Patient { get; set; }
+
+        public void EmptyBed()
+        {
+            Patient = null;
+            Availability = true;
+        }
     }
 }
