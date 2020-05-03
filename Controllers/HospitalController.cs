@@ -1,4 +1,5 @@
-﻿using ProyectoED1.Models;
+﻿using ProyectoED1.Helpers;
+using ProyectoED1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,42 @@ namespace ProyectoED1.Controllers
 {
     public class HospitalController : Controller
     {
+        public bool FirstTime = true;
+
         public ActionResult Index()
         {
+            if (FirstTime)
+            {
+                LoadHospitalsByDepartment();
+                FirstTime = false;
+            }
             return View();
+        }
+
+        private void LoadHospitalsByDepartment()
+        {
+            Storage.Instance.HCapital.Add("Guatemala");
+            Storage.Instance.HCapital.Add("Sacatepéquez");
+            Storage.Instance.HCapital.Add("Chimaltenango");
+            Storage.Instance.HQuetzaltenango.Add("Quetzaltenango");
+            Storage.Instance.HQuetzaltenango.Add("Totonicapán");
+            Storage.Instance.HQuetzaltenango.Add("San Marcos");
+            Storage.Instance.HQuetzaltenango.Add("Huehuetenango");
+            Storage.Instance.HPeten.Add("Petén");
+            Storage.Instance.HPeten.Add("Alta Verapaz");
+            Storage.Instance.HPeten.Add("Baja verapaz");
+            Storage.Instance.HPeten.Add("Sololá");
+            Storage.Instance.HPeten.Add("Quiché");
+            Storage.Instance.HEscuintla.Add("Escuintla");
+            Storage.Instance.HEscuintla.Add("Santa Rosa");
+            Storage.Instance.HEscuintla.Add("Jutiapa");
+            Storage.Instance.HEscuintla.Add("Suchitepéquez");
+            Storage.Instance.HEscuintla.Add("Retalhuleu");
+            Storage.Instance.HOriente.Add("Izabal");
+            Storage.Instance.HOriente.Add("Zacapa");
+            Storage.Instance.HOriente.Add("Chiquimula");
+            Storage.Instance.HOriente.Add("Jalapa");
+            Storage.Instance.HOriente.Add("El Progreso");
         }
 
         [HttpPost]
@@ -45,13 +79,18 @@ namespace ProyectoED1.Controllers
                     Name = collection["Name"],
                     LastName = collection["LastName"],
                     Department = collection["Department"],
+                    Hospital = GetHospital(collection["Department"]),
                     Municipality = collection["Municipality"],
                     Symptoms = collection["Symptoms"],
                     CUI = int.Parse(collection["CUI"]),
                     Age = int.Parse(collection["Age"]),
-                    InfectionDescription = collection["InfectionDescription"]
+                    InfectionDescription = collection["InfectionDescription"],
+                    Status = "Sospechoso"
                 };
                 newPatient.PriorityAssignment();
+                Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
+                //Generar paciente para AVL's
+                //Storage.Instance.PatientsByName.add(patient);
                 return RedirectToAction("Index");
             }
             catch
@@ -61,9 +100,42 @@ namespace ProyectoED1.Controllers
             }
         }
 
+        private string GetHospital(string department)
+        {
+            if (Storage.Instance.HCapital.Contains(department))
+            {
+                return "Capital";
+            }
+            else if (Storage.Instance.HQuetzaltenango.Contains(department))
+            {
+                return "Quetzaltenango";
+            }
+            else if (Storage.Instance.HPeten.Contains(department))
+            {
+                return "Peten";
+            }
+            else if (Storage.Instance.HEscuintla.Contains(department))
+            {
+                return "Escuintla";
+            }
+            else if (Storage.Instance.HOriente.Contains(department))
+            {
+                return "Oriente";
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public ActionResult PatientsList()
         {
-            return View();
+            var patientsList = new List<PatientModel>();
+            foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
+            {
+                patientsList.Add(patient.Value);
+            }
+            return View(patientsList);
         }
     }
 }

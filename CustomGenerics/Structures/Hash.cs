@@ -123,20 +123,21 @@ namespace CustomGenerics.Structures
             return code;
 
         }
-        public List<HashNode<T>> GetTasksAsNodes()
+
+        public List<HashNode<T>> GetAsNodes()
         {
-            var listOfTasks = new List<HashNode<T>>();
+            var returnList = new List<HashNode<T>>();
             var currentNode = new HashNode<T>();
             foreach (var task in TablaHash)
             {
                 currentNode = task;
                 while (currentNode != null)
                 {
-                    listOfTasks.Add(currentNode);
+                    returnList.Add(currentNode);
                     currentNode = currentNode.Next;
                 }
             }
-            return listOfTasks;
+            return returnList;
         }
 
         public List<HashNode<T>> GetSortedList(Func<T,bool> predicate)
@@ -157,5 +158,6 @@ namespace CustomGenerics.Structures
             }
             return SortedList;
         }
+
     }
 }
