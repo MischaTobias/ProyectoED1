@@ -166,6 +166,7 @@
     <Content Include="Views\Hospital\Index.cshtml" />
     <Content Include="Views\Shared\PrevLayout.cshtml" />
     <Content Include="Views\Hospital\NewCase.cshtml" />
+    <Content Include="Views\Hospital\PatientsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

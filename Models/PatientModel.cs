@@ -16,6 +16,7 @@ namespace ProyectoED1.Models
         public string Department { get; set; }
         [Display(Name = "Municipalidad")]
         public string Municipality { get; set; }
+        public string Hospital { get; set; }
         [Display(Name = "Síntomas")]
         public string Symptoms { get; set; } 
         [Display(Name = "Descripción del contagio")]
@@ -25,6 +26,7 @@ namespace ProyectoED1.Models
         public int Age { get; set; }
         public int Priority { get; set; }
         public bool IsInfected { get; set; }
+        public string Status { get; set; }
         public DateTime ArrivalDate { get; set; }
 
         public int CompareTo(object obj)
