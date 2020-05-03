@@ -73,13 +73,15 @@
             @Html.LabelFor(model => model.InfectionDescription, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.InfectionDescription, new { htmlAttributes = new { @class = "form-control" } })
-                <font color="red"><strong>@Html.ValidationMessageFor(model => model.InfectionDescription, "", new { @class = "text-danger" })</strong></font>
             </div>
         </div>
 
-        <div class="form-group">
-            <input id="ArrivalDate" type="datetime-local" name="ArrivalDate" />
-        </div>
+        @Html.LabelFor(model => model.ArrivalDate, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="form-group" style="margin-left: 195px">
+        <input id="ArrivalDate" type="datetime-local" name="ArrivalDate" />
+        <br />
+        <font color="red"><strong>@Html.ValidationMessageFor(model => model.ArrivalDate, "", new { @class = "text-danger" })</strong></font>
+    </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

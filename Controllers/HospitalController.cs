@@ -24,28 +24,11 @@ namespace ProyectoED1.Controllers
 
         private void LoadHospitalsByDepartment()
         {
-            Storage.Instance.HCapital.Add("Guatemala");
-            Storage.Instance.HCapital.Add("Sacatepéquez");
-            Storage.Instance.HCapital.Add("Chimaltenango");
-            Storage.Instance.HQuetzaltenango.Add("Quetzaltenango");
-            Storage.Instance.HQuetzaltenango.Add("Totonicapán");
-            Storage.Instance.HQuetzaltenango.Add("San Marcos");
-            Storage.Instance.HQuetzaltenango.Add("Huehuetenango");
-            Storage.Instance.HPeten.Add("Petén");
-            Storage.Instance.HPeten.Add("Alta Verapaz");
-            Storage.Instance.HPeten.Add("Baja verapaz");
-            Storage.Instance.HPeten.Add("Sololá");
-            Storage.Instance.HPeten.Add("Quiché");
-            Storage.Instance.HEscuintla.Add("Escuintla");
-            Storage.Instance.HEscuintla.Add("Santa Rosa");
-            Storage.Instance.HEscuintla.Add("Jutiapa");
-            Storage.Instance.HEscuintla.Add("Suchitepéquez");
-            Storage.Instance.HEscuintla.Add("Retalhuleu");
-            Storage.Instance.HOriente.Add("Izabal");
-            Storage.Instance.HOriente.Add("Zacapa");
-            Storage.Instance.HOriente.Add("Chiquimula");
-            Storage.Instance.HOriente.Add("Jalapa");
-            Storage.Instance.HOriente.Add("El Progreso");
+            Storage.Instance.HCapital.GetDepartments("Capital");
+            Storage.Instance.HQuetzaltenango.GetDepartments("Quetzaltenango");
+            Storage.Instance.HPeten.GetDepartments("Peten");
+            Storage.Instance.HEscuintla.GetDepartments("Escuintla");
+            Storage.Instance.HOriente.GetDepartments("Oriente");
         }
 
         [HttpPost]
@@ -85,40 +68,78 @@ namespace ProyectoED1.Controllers
                     CUI = int.Parse(collection["CUI"]),
                     Age = int.Parse(collection["Age"]),
                     InfectionDescription = collection["InfectionDescription"],
+                    IsInfected = false,
+                    ArrivalDate = DateTime.Parse(collection["ArrivalDate"]),
                     Status = "Sospechoso"
                 };
                 newPatient.PriorityAssignment();
+                var structurePatient = new PatientStructure()
+                {
+                    Name = newPatient.Name,
+                    LastName = newPatient.LastName,
+                    Hospital = newPatient.Hospital,
+                    CUI = newPatient.CUI,
+                    Age = newPatient.Age,
+                    IsInfected = newPatient.IsInfected,
+                    ArrivalDate = newPatient.ArrivalDate,
+                    Priority = newPatient.Priority,
+                    Status = newPatient.Status
+                };
                 Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
-                //Generar paciente para AVL's
-                //Storage.Instance.PatientsByName.add(patient);
+                Storage.Instance.PatientsByName.AddPatient(structurePatient, PatientStructure.CompareByName);
+                Storage.Instance.PatientsByLastName.AddPatient(structurePatient, PatientStructure.CompareByLastName);
+                Storage.Instance.PatientsByCUI.AddPatient(structurePatient, PatientStructure.CompareByCUI);
+                SendToHospital(structurePatient);
                 return RedirectToAction("Index");
             }
             catch
             {
-                ModelState.AddModelError("InfectionDescription", "Por favor asegúrese de haber llenado todos los campos correctamente.");
+                ModelState.AddModelError("ArrivalDate", "Por favor asegúrese de haber llenado todos los campos correctamente.");
                 return View("NewCase");
+            }
+        }
+
+        private void SendToHospital(PatientStructure patient)
+        {
+            switch (patient.Hospital)
+            {
+                case "Capital":
+                    Storage.Instance.HCapital.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    break;
+                case "Quetzaltenango":
+                    Storage.Instance.HQuetzaltenango.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    break;
+                case "Peten":
+                    Storage.Instance.HPeten.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    break;
+                case "Escuintla":
+                    Storage.Instance.HEscuintla.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    break;
+                case "Oriente":
+                    Storage.Instance.HOriente.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    break;
             }
         }
 
         private string GetHospital(string department)
         {
-            if (Storage.Instance.HCapital.Contains(department))
+            if (Storage.Instance.HCapital.Departments.Contains(department))
             {
                 return "Capital";
             }
-            else if (Storage.Instance.HQuetzaltenango.Contains(department))
+            else if (Storage.Instance.HQuetzaltenango.Departments.Contains(department))
             {
                 return "Quetzaltenango";
             }
-            else if (Storage.Instance.HPeten.Contains(department))
+            else if (Storage.Instance.HPeten.Departments.Contains(department))
             {
                 return "Peten";
             }
-            else if (Storage.Instance.HEscuintla.Contains(department))
+            else if (Storage.Instance.HEscuintla.Departments.Contains(department))
             {
                 return "Escuintla";
             }
-            else if (Storage.Instance.HOriente.Contains(department))
+            else if (Storage.Instance.HOriente.Departments.Contains(department))
             {
                 return "Oriente";
             }
@@ -136,6 +157,11 @@ namespace ProyectoED1.Controllers
                 patientsList.Add(patient.Value);
             }
             return View(patientsList);
+        }
+
+        public ActionResult Statitics()
+        {
+            return View();
         }
     }
 }

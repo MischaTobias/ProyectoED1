@@ -11,7 +11,13 @@ namespace CustomGenerics.Structures
         public AVLNode<T> Root;
         private List<AVLNode<T>> ReturningList;
 
-        public void Insert(AVLNode<T> currentNode, AVLNode<T> newNode, Comparison<T> comparison)
+        public void AddPatient(T value, Comparison<T> comparison)
+        {
+            var newNode = new AVLNode<T>() { Patient = value };
+            Insert(Root, newNode, comparison);
+        }
+
+        private void Insert(AVLNode<T> currentNode, AVLNode<T> newNode, Comparison<T> comparison)
         {
             if (currentNode == null && currentNode == Root)
             {
