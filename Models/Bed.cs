@@ -15,5 +15,11 @@ namespace ProyectoED1.Models
         {
             return this.Bedcode.CompareTo(((Bed)obj).Bedcode);
         }
+
+        public void EmptyBed()
+        {
+            Patient = 0;
+            Availability = true;
+        }
     }
 }
