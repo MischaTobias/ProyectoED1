@@ -1,0 +1,49 @@
+﻿@model ProyectoED1.Models.Statistics
+
+@{
+    ViewBag.Title = "Statitics";
+}
+
+<h2>Statitics</h2>
+
+<div>
+    <h4>Statistics</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Infected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Infected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Suspicious)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Suspicious)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PositivePercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PositivePercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recovered)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recovered)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to Menu", "Index")
+</p>
