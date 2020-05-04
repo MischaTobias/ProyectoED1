@@ -14,6 +14,7 @@ namespace ProyectoED1.Models
 
         public void GetDepartments(string Hospital)
         {
+            Departments = new List<string>();
             switch (Hospital)
             {
                 case "Capital":

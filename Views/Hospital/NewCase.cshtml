@@ -69,23 +69,32 @@
             </div>
         </div>
 
+        @Html.LabelFor(model => model.ArrivalDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group" style="margin-left: 195px">
+            <input id="ArrivalDate" type="datetime-local" name="ArrivalDate" />
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.InfectionDescription, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                <p style="margin-top: 10px"><strong>Marque los siguientes checkbox si cumple con la descripción de alguno de ellos:</strong></p>
+                @Html.CheckBox("Europe", false) <strong>¿Ha viajado recientemente a Europa?</strong>
+                <br />
+                @Html.CheckBox("InfectedSibling", false) <strong>¿Tiene algún familiar que esté contagiado con <em>COVID-19</em>?</strong>
+                <br />
+                @Html.CheckBox("SocialMeeting", false) <strong>¿Ha participado en alguna reunión social con un sospechoso de <em>COVID-19</em>?</strong>
+                <br />
+                <br />
+                <p><strong>Si desea agregar alguna descripción adicional del posible contagio puede ingresarla a continuación:</strong></p>
                 @Html.TextAreaFor(model => model.InfectionDescription, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <font color="red"><strong>@Html.ValidationMessageFor(model => model.InfectionDescription, "", new { @class = "text-danger" })</strong></font>
             </div>
         </div>
 
-        @Html.LabelFor(model => model.ArrivalDate, htmlAttributes: new { @class = "control-label col-md-2" })
-    <div class="form-group" style="margin-left: 195px">
-        <input id="ArrivalDate" type="datetime-local" name="ArrivalDate" />
-        <br />
-        <font color="red"><strong>@Html.ValidationMessageFor(model => model.ArrivalDate, "", new { @class = "text-danger" })</strong></font>
-    </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Ingresar" class="btn btn-default" />
             </div>
         </div>
     </div>

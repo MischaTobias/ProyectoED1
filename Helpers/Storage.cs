@@ -20,8 +20,8 @@ namespace ProyectoED1.Helpers
             }
         }
 
-        public Hash<PatientModel> PatientsHash = new Hash<PatientModel>();
         public Hash<Bed> BedHash = new Hash<Bed>();
+        public Hash<PatientModel> PatientsHash = new Hash<PatientModel>();
         public AVL<PatientStructure> PatientsByName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByLastName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByCUI = new AVL<PatientStructure>();
@@ -30,5 +30,6 @@ namespace ProyectoED1.Helpers
         public Hospital HPeten = new Hospital();
         public Hospital HEscuintla = new Hospital();
         public Hospital HOriente = new Hospital();
+        public Statistics CountryStatistics = new Statistics();
     }
 }

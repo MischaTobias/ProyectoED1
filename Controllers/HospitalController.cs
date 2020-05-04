@@ -57,6 +57,14 @@ namespace ProyectoED1.Controllers
         {
             try
             {
+                foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
+                {
+                    if (patient.Value.CUI == int.Parse(collection["CUI"]))
+                    {
+                        ModelState.AddModelError("CUI", "Un paciente con el mismo dpi ya ha sido ingresado en el sistema. Ingrese otro paciente.");
+                        return View("NewCase");
+                    }
+                }
                 var newPatient = new PatientModel()
                 {
                     Name = collection["Name"],
@@ -89,12 +97,17 @@ namespace ProyectoED1.Controllers
                 Storage.Instance.PatientsByName.AddPatient(structurePatient, PatientStructure.CompareByName);
                 Storage.Instance.PatientsByLastName.AddPatient(structurePatient, PatientStructure.CompareByLastName);
                 Storage.Instance.PatientsByCUI.AddPatient(structurePatient, PatientStructure.CompareByCUI);
+                if (Storage.Instance.CountryStatistics.Suspicious == null)
+                {
+                    Storage.Instance.CountryStatistics.Suspicious = 0;
+                }
+                Storage.Instance.CountryStatistics.Suspicious++;
                 SendToHospital(structurePatient);
                 return RedirectToAction("Index");
             }
             catch
             {
-                ModelState.AddModelError("ArrivalDate", "Por favor asegúrese de haber llenado todos los campos correctamente.");
+                ModelState.AddModelError("InfectionDescription", "Por favor asegúrese de haber llenado todos los campos correctamente.");
                 return View("NewCase");
             }
         }

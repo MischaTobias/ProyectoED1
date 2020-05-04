@@ -129,6 +129,7 @@
     <Compile Include="Models\Hospital.cs" />
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\PatientStructure.cs" />
+    <Compile Include="Models\Statistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <Content Include="Views\Shared\PrevLayout.cshtml" />
     <Content Include="Views\Hospital\NewCase.cshtml" />
     <Content Include="Views\Hospital\PatientsList.cshtml" />
+    <Content Include="Views\Hospital\Statitics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
