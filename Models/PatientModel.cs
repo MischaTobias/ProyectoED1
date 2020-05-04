@@ -16,5 +16,20 @@ namespace ProyectoED1.Models
         public string Symptoms { get; set; } 
         [Display(Name = "Descripción del contagio")]
         public string InfectionDescription { get; set; }
+        public int InfectionChance { get; set; }
+
+        public void InfectionTest()
+        {
+            Random Rnd = new Random();
+            if (Rnd.Next(100) >= InfectionChance)
+            {
+                IsInfected = true;
+                Status = "Infected";
+            }
+            else
+            {
+                Status = "NotInfected";
+            }
+        }
     }
 }
