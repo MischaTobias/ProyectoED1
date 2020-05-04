@@ -10,6 +10,7 @@ namespace ProyectoED1.Models
         public bool Availability { get; set; }
         public int Bedcode { get; set; }
         public int Patient { get; set; }
+        public string Hospital { get; set; }
 
         public int CompareTo(object obj)
         {

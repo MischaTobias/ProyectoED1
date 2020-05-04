@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CustomGenerics.Structures
 {
     public class Hash<T> where T : IComparable

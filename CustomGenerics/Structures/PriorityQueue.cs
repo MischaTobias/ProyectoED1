@@ -61,7 +61,6 @@ namespace CustomGenerics.Structures
         //        newNode.Father = currentNode;
         //        currentNode.LeftSon = newNode;
         //        OrderDowntoUp(currentNode.LeftSon);
-
         //    }
         //    else if (currentNode.RightSon == null)
         //    {
@@ -300,6 +299,8 @@ namespace CustomGenerics.Structures
         {
             return this.MemberwiseClone();
         }
+
+        
     }
 
 }

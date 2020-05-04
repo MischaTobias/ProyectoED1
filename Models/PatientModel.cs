@@ -28,6 +28,7 @@ namespace ProyectoED1.Models
         public bool IsInfected { get; set; }
         public string Status { get; set; }
         public DateTime ArrivalDate { get; set; }
+        public int InfectionChance { get; set; }
 
         public int CompareTo(object obj)
         {
@@ -79,6 +80,20 @@ namespace ProyectoED1.Models
                 {
                     Priority = 6;
                 }
+            }
+        }
+
+        public void InfectionTest()
+        {
+            Random Rnd = new Random();
+            if (Rnd.Next(100) >= InfectionChance)
+            {
+                IsInfected = true;
+                Status = "Infected";
+            }
+            else
+            {
+                Status = "NotInfected";
             }
         }
 
