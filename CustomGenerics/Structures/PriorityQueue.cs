@@ -26,7 +26,7 @@ namespace CustomGenerics.Structures
             return PatientsNumber == 10 ? true : false;
         }
 
-        public void AddPatient(int key, DateTime date, int priority)
+        public void AddPatient(string key, DateTime date, int priority)
         {
             var newNode = new PQNode<T>(key, date, priority);
             if (IsEmpty())
