@@ -25,11 +25,7 @@ namespace ProyectoED1.Helpers
         public AVL<PatientStructure> PatientsByName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByLastName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByCUI = new AVL<PatientStructure>();
-        public Hospital HCapital = new Hospital();
-        public Hospital HQuetzaltenango = new Hospital();
-        public Hospital HPeten = new Hospital();
-        public Hospital HEscuintla = new Hospital();
-        public Hospital HOriente = new Hospital();
+        public List<Hospital> Hospitals = new List<Hospital>();
         public Statistics CountryStatistics = new Statistics();
     }
 }

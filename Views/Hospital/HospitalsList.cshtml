@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ProyectoED1.Models.Hospital>
+
+@{
+    ViewBag.Title = "HospitalsList";
+}
+
+<h2>HospitalsList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HospitalName)
+        </th>
+        <th>
+            Camas Ocupadas
+        </th>
+        <th>
+            Contagiados en Cola
+        </th>
+        <th>
+            Sospechosos en Cola
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.HospitalName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BedsInUse)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InfectedQueue.PatientsNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SuspiciousQueue.PatientsNumber)
+        </td>
+        <td>
+            @Html.ActionLink("Ir al Hospital", "GoToHospital", new { name = item.HospitalName })
+        </td>
+    </tr>
+}
+
+</table>
