@@ -11,10 +11,18 @@ namespace ProyectoED1.Models
         [Display(Name = "Contagiados")]
         public int Infected { get; set; }
         [Display(Name = "Sospechosos")]
-        public Nullable<int> Suspicious { get; set; }
-        [Display(Name = "Porcentaje de sospechosos positivos")]
+        public int Suspicious { get; set; }
+        [Display(Name = "Sospechosos positivos")]
         public double PositivePercentage { get; set; }
         [Display(Name = "Cantidad de Egresados")]
         public int Recovered { get; set; }
+
+        public Statistics()
+        {
+            Infected = 0;
+            Suspicious = 0;
+            PositivePercentage = 0;
+            Recovered = 0;
+        }
     }
 }

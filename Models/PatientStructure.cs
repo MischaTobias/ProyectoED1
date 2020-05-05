@@ -8,7 +8,7 @@ namespace ProyectoED1.Models
 {
     public class PatientStructure : IComparable
     {
-        public int CUI { get; set; }
+        public string CUI { get; set; }
         [Display(Name = "Nombre")]
         public string Name { get; set; }
         [Display(Name = "Apellido")]
