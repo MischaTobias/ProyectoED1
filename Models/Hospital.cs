@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using ProyectoED1.Helpers;
 
 namespace ProyectoED1.Models
 {
@@ -16,6 +17,7 @@ namespace ProyectoED1.Models
         public PriorityQueue<PatientModel> SuspiciousQueue { get; set; }
         public int[] Bedcodearray = new int[10];
         public int BedsInUse { get; set; }
+        public int Hospitalcode { get; set; }   
 
         public List<Bed> BedList { get; set; }
         public List<PatientModel> InfectedList { get; set; }
@@ -60,5 +62,25 @@ namespace ProyectoED1.Models
                     break;
             }
         }
+        public bool BedFull()
+        {
+            bool IsFull = false;
+            foreach (var item in Bedcodearray)
+            {
+                if(Storage.Instance.BedHash.Search(item).Value.Availability == true)
+                {
+                    IsFull = true;
+                }       
+            }
+            return IsFull;
+        }
+        public bool InfectedQueueFull()
+        {
+            return InfectedQueue.IsFull();
+        }
+        public bool SuspiciousQueueFull()
+        {
+            return SuspiciousQueue.IsFull();
+        }       
     }
 }
