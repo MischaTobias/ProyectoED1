@@ -1,6 +1,4 @@
-﻿&nbsp;
-
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
@@ -8,20 +6,29 @@
     Layout = "~/Views/Shared/PrevLayout.cshtml";
 }
 
+&nbsp;
+<br />
+
 <h2 style="text-align: center">Atención en Hospital - Caso <strong><em>COVID-19</em></strong></h2>
+
+<br />
 
 @using (Html.BeginForm("Index", "Hospital", FormMethod.Post))
 {
     <br />
     <div style="text-align: center">
-        <button type="submit" value="NewCase" name="Option">Añadir un caso sospechoso</button>
+        <button type="submit" value="NewCase" name="Option" style="width:300px;height:30px">Añadir un caso sospechoso</button>
     </div>
     <br />
     <div style="text-align: center">
-        <button type="submit" value="PatientsList" name="Option">Lista de pacientes</button>
+        <button type="submit" value="PatientsList" name="Option" style="width:300px;height:30px">Lista de pacientes</button>
     </div>
     <br />
     <div style="text-align: center">
-        <button type="submit" value="Statistics" name="Option">Estadísticas</button>
+        <button type="submit" value="HospitalsList" name="Option" style="width:300px;height:30px">Lista de hospitales</button>
+    </div>
+    <br />
+    <div style="text-align: center">
+        <button type="submit" value="Statistics" name="Option" style="width:300px;height:30px">Estadísticas</button>
     </div>
 }

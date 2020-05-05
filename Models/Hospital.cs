@@ -1,6 +1,7 @@
 ﻿using CustomGenerics.Structures;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,15 +9,22 @@ namespace ProyectoED1.Models
 {
     public class Hospital
     {
+        [Display(Name = "Hospital")]
+        public string HospitalName { get; set; }
         public List<string> Departments { get; set; }
-        public PriorityQueue <PatientModel> InfectedPatients { get; set; }
-        public PriorityQueue <PatientModel> SuspiciousPatients { get; set; }
+        public PriorityQueue<PatientModel> InfectedQueue { get; set; }
+        public PriorityQueue<PatientModel> SuspiciousQueue { get; set; }
         public int[] Bedcodearray = new int[10];
+        public int BedsInUse { get; set; }
 
-        public void GetDepartments(string Hospital)
+        public List<Bed> BedList { get; set; }
+        public List<PatientModel> InfectedList { get; set; }
+        public List<PatientModel> SuspiciousList { get; set; }
+
+        public void GetDepartments()
         {
             Departments = new List<string>();
-            switch (Hospital)
+            switch (HospitalName)
             {
                 case "Capital":
                     Departments.Add("Guatemala");
@@ -50,43 +58,6 @@ namespace ProyectoED1.Models
                     Departments.Add("Jalapa");
                     Departments.Add("El Progreso");
                     break;
-            }
-        }
-
-        public bool BedFull()
-        {
-            bool IsFull = false;
-            foreach (var item in Bedcodearray)
-            {
-                //if(Search Hash the bed.Availability ==true){
-                IsFull = true;
-                //}            
-
-            }
-            return IsFull;
-        }
-        public bool InfectedQueueFull()
-        {
-            return InfectedPatients.IsFull();
-        }
-        public bool SuspiciousQueueFull()
-        {
-            return SuspiciousPatients.IsFull();
-        }
-        public void InfectionTest()
-        {
-            //PatientModel patient=  //Hash.Search(SuspiciousPatients.Delete().Key);
-            //Realizar la prueba
-            if (patient.IsInfected)
-            {
-                if (!InfectedQueueFull)
-                {
-                    InfectedPatients.Insert(patient);
-                }
-                else
-                {
-                    //En caso la lista de enfermos este llena
-                }
             }
         }
     }

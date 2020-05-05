@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,9 +8,10 @@ namespace ProyectoED1.Models
 {
     public class Bed : IComparable
     {
+        [Display(Name = "Disponibilidad")]
         public bool Availability { get; set; }
         public int Bedcode { get; set; }
-        public int Patient { get; set; }
+        public PatientStructure Patient { get; set; }
         public string Hospital { get; set; }
 
         public int CompareTo(object obj)
@@ -19,7 +21,7 @@ namespace ProyectoED1.Models
 
         public void EmptyBed()
         {
-            Patient = 0;
+            Patient = null;
             Availability = true;
         }
     }
