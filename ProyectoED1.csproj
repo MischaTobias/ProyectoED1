@@ -170,6 +170,8 @@
     <Content Include="Views\Hospital\NewCase.cshtml" />
     <Content Include="Views\Hospital\PatientsList.cshtml" />
     <Content Include="Views\Hospital\Statitics.cshtml" />
+    <Content Include="Views\Hospital\HospitalsList.cshtml" />
+    <Content Include="Views\Hospital\Hospital.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

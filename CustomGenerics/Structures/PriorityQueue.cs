@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace CustomGenerics.Structures
     public class PriorityQueue<T> : ICloneable
     {
         public PQNode<T> Root;
+        [Display(Name = "")]
         public int PatientsNumber;
 
         public PriorityQueue()

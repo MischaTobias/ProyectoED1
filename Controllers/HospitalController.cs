@@ -24,11 +24,24 @@ namespace ProyectoED1.Controllers
 
         private void LoadHospitalsByDepartment()
         {
-            Storage.Instance.HCapital.GetDepartments("Capital");
-            Storage.Instance.HQuetzaltenango.GetDepartments("Quetzaltenango");
-            Storage.Instance.HPeten.GetDepartments("Peten");
-            Storage.Instance.HEscuintla.GetDepartments("Escuintla");
-            Storage.Instance.HOriente.GetDepartments("Oriente");
+            AddHospital("Capital");
+            AddHospital("Quetzaltenango");
+            AddHospital("Peten");
+            AddHospital("Escuintla");
+            AddHospital("Oriente");
+        }
+
+        private void AddHospital(string hospital)
+        {
+            var newHospital = new Hospital()
+            {
+                HospitalName = hospital,
+                BedsInUse = 0,
+                InfectedQueue = new CustomGenerics.Structures.PriorityQueue<PatientModel>(),
+                SuspiciousQueue = new CustomGenerics.Structures.PriorityQueue<PatientModel>()
+            };
+            newHospital.GetDepartments();
+            Storage.Instance.Hospitals.Add(newHospital);
         }
 
         [HttpPost]
@@ -39,10 +52,12 @@ namespace ProyectoED1.Controllers
             {
                 case "NewCase":
                     return RedirectToAction("NewCase");
+                case "HospitalsList":
+                    return RedirectToAction("HospitalsList");
                 case "PatientsList":
-                    break;
+                    return RedirectToAction("PatientsList");
                 case "Statistics":
-                    break;
+                    return RedirectToAction("Statistics");
             }
             return View();
         }
@@ -114,52 +129,25 @@ namespace ProyectoED1.Controllers
 
         private void SendToHospital(PatientStructure patient)
         {
-            switch (patient.Hospital)
+            foreach (var hospital in Storage.Instance.Hospitals)
             {
-                case "Capital":
-                    Storage.Instance.HCapital.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
-                    break;
-                case "Quetzaltenango":
-                    Storage.Instance.HQuetzaltenango.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
-                    break;
-                case "Peten":
-                    Storage.Instance.HPeten.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
-                    break;
-                case "Escuintla":
-                    Storage.Instance.HEscuintla.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
-                    break;
-                case "Oriente":
-                    Storage.Instance.HOriente.SuspiciousPatients.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
-                    break;
+                if (hospital.HospitalName == patient.Hospital)
+                {
+                    hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                }
             }
         }
 
         private string GetHospital(string department)
         {
-            if (Storage.Instance.HCapital.Departments.Contains(department))
+            foreach (var hospital in Storage.Instance.Hospitals)
             {
-                return "Capital";
+                if (hospital.Departments.Contains(department))
+                {
+                    return hospital.HospitalName;
+                }
             }
-            else if (Storage.Instance.HQuetzaltenango.Departments.Contains(department))
-            {
-                return "Quetzaltenango";
-            }
-            else if (Storage.Instance.HPeten.Departments.Contains(department))
-            {
-                return "Peten";
-            }
-            else if (Storage.Instance.HEscuintla.Departments.Contains(department))
-            {
-                return "Escuintla";
-            }
-            else if (Storage.Instance.HOriente.Departments.Contains(department))
-            {
-                return "Oriente";
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public ActionResult PatientsList()
@@ -174,7 +162,25 @@ namespace ProyectoED1.Controllers
 
         public ActionResult Statitics()
         {
-            return View();
+            return View(Storage.Instance.CountryStatistics);
+        }
+
+        public ActionResult HospitalsList()
+        {
+            return View(Storage.Instance.Hospitals);
+        } 
+
+        public ActionResult Hospital(string name)
+        {
+            var showHospital = Storage.Instance.Hospitals.First();
+            foreach (var hospital in Storage.Instance.Hospitals)
+            {
+                if (hospital.HospitalName == name)
+                {
+                    showHospital = hospital;
+                }
+            }
+            return View(showHospital);
         }
     }
 }

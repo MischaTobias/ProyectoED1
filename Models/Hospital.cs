@@ -1,6 +1,7 @@
 ﻿using CustomGenerics.Structures;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using ProyectoED1.Helpers;
@@ -9,16 +10,23 @@ namespace ProyectoED1.Models
 {
     public class Hospital
     {
-        public List<string> Departments { get; set; }
-        public PriorityQueue<PatientModel> InfectedPatients { get; set; }
-        public PriorityQueue<PatientModel> SuspiciousPatients { get; set; }
-        public int[] Bedcodearray = new int[10];
-        public int Hospitalcode { get; set; }   
+        [Display(Name = "Hospital")]
         public string HospitalName { get; set; }
-        public void GetDepartments(string Hospital)
+        public List<string> Departments { get; set; }
+        public PriorityQueue<PatientModel> InfectedQueue { get; set; }
+        public PriorityQueue<PatientModel> SuspiciousQueue { get; set; }
+        public int[] Bedcodearray = new int[10];
+        public int BedsInUse { get; set; }
+        public int Hospitalcode { get; set; }   
+
+        public List<Bed> BedList { get; set; }
+        public List<PatientModel> InfectedList { get; set; }
+        public List<PatientModel> SuspiciousList { get; set; }
+
+        public void GetDepartments()
         {
             Departments = new List<string>();
-            switch (Hospital)
+            switch (HospitalName)
             {
                 case "Capital":
                     Departments.Add("Guatemala");
@@ -68,11 +76,11 @@ namespace ProyectoED1.Models
         }
         public bool InfectedQueueFull()
         {
-            return InfectedPatients.IsFull();
+            return InfectedQueue.IsFull();
         }
         public bool SuspiciousQueueFull()
         {
-            return SuspiciousPatients.IsFull();
+            return SuspiciousQueue.IsFull();
         }       
     }
 }
