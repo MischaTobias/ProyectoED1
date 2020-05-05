@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<ProyectoED1.Models.Hospital>
 
 @{
-    ViewBag.Title = "HospitalsList";
+    ViewBag.Title = "Hospitales";
 }
 
-<h2>HospitalsList</h2>
+<h2>Lista de hospitales</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -41,7 +38,7 @@
             @Html.DisplayFor(modelItem => item.SuspiciousQueue.PatientsNumber)
         </td>
         <td>
-            @Html.ActionLink("Ir al Hospital", "GoToHospital", new { name = item.HospitalName })
+            @Html.ActionLink("Ir al Hospital", "Hospital", new { name = item.HospitalName })
         </td>
     </tr>
 }

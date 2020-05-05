@@ -23,6 +23,13 @@ namespace ProyectoED1.Models
         public List<PatientModel> InfectedList { get; set; }
         public List<PatientModel> SuspiciousList { get; set; }
 
+        public Hospital()
+        {
+            BedList = new List<Bed>();
+            InfectedList = new List<PatientModel>();
+            SuspiciousList = new List<PatientModel>();
+        }
+
         public void GetDepartments()
         {
             Departments = new List<string>();

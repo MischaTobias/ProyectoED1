@@ -205,8 +205,15 @@ namespace CustomGenerics.Structures
 
         public List<AVLNode<T>> GetList()
         {
-            InOrder(Root);
-            return ReturningList;
+            if (Root != null)
+            {
+                InOrder(Root);
+                return ReturningList;
+            }
+            else
+            {
+                return new List<AVLNode<T>>();
+            }
         }
 
         private void InOrder(AVLNode<T> currentNode)

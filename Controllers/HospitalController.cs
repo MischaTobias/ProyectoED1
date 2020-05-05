@@ -3,6 +3,7 @@ using ProyectoED1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PagedList;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,7 +11,7 @@ namespace ProyectoED1.Controllers
 {
     public class HospitalController : Controller
     {
-        public bool FirstTime = true;
+        public static bool FirstTime = true;
 
         public ActionResult Index()
         {
@@ -74,7 +75,7 @@ namespace ProyectoED1.Controllers
             {
                 foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
                 {
-                    if (patient.Value.CUI == int.Parse(collection["CUI"]))
+                    if (patient.Value.CUI == collection["CUI"])
                     {
                         ModelState.AddModelError("CUI", "Un paciente con el mismo dpi ya ha sido ingresado en el sistema. Ingrese otro paciente.");
                         return View("NewCase");
@@ -88,7 +89,7 @@ namespace ProyectoED1.Controllers
                     Hospital = GetHospital(collection["Department"]),
                     Municipality = collection["Municipality"],
                     Symptoms = collection["Symptoms"],
-                    CUI = int.Parse(collection["CUI"]),
+                    CUI = collection["CUI"],
                     Age = int.Parse(collection["Age"]),
                     InfectionDescription = collection["InfectionDescription"],
                     IsInfected = false,
@@ -108,14 +109,10 @@ namespace ProyectoED1.Controllers
                     Priority = newPatient.Priority,
                     Status = newPatient.Status
                 };
-                Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
+                //Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
                 Storage.Instance.PatientsByName.AddPatient(structurePatient, PatientStructure.CompareByName);
                 Storage.Instance.PatientsByLastName.AddPatient(structurePatient, PatientStructure.CompareByLastName);
                 Storage.Instance.PatientsByCUI.AddPatient(structurePatient, PatientStructure.CompareByCUI);
-                if (Storage.Instance.CountryStatistics.Suspicious == null)
-                {
-                    Storage.Instance.CountryStatistics.Suspicious = 0;
-                }
                 Storage.Instance.CountryStatistics.Suspicious++;
                 SendToHospital(structurePatient);
                 return RedirectToAction("Index");
@@ -133,7 +130,7 @@ namespace ProyectoED1.Controllers
             {
                 if (hospital.HospitalName == patient.Hospital)
                 {
-                    hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    //hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
                 }
             }
         }
@@ -150,19 +147,65 @@ namespace ProyectoED1.Controllers
             return null;
         }
 
-        public ActionResult PatientsList()
+        public ActionResult PatientsList(int? page, string search, string criteria)
         {
-            var patientsList = new List<PatientModel>();
-            foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
+            var patientsList = new List<PatientStructure>();
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            if (criteria == null && search != null)
             {
-                patientsList.Add(patient.Value);
+                ViewBag.Error = TempData["Por favor escoja un criterio de búsqueda."];
+                return View(patientsList.ToPagedList(pageNumber, pageSize));
             }
-            return View(patientsList);
+            else
+            {
+                patientsList = GetPatients(search, criteria);
+            }
+            return View(patientsList.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult Statitics()
+        private List<PatientStructure> GetPatients(string search, string criteria)
         {
-            return View(Storage.Instance.CountryStatistics);
+            var list = new List<PatientStructure>();
+            var patient = new PatientStructure();
+            if (search != null)
+            {
+                switch (criteria)
+                {
+                    case "name":
+                        patient.Name = search;
+                        //list = Storage.Instance.PatientsByName.Search(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName);
+                        break;
+                    case "lastname":
+                        patient.LastName = search;
+                        //list = Storage.Instance.PatientsByLastName.Search(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName);
+                            break;
+                    case "cui":
+                        patient.CUI = search;
+                        //list = Storage.Instance.PatientsByCUI.Search(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI);
+                        break;
+                }
+            }
+            else
+            {
+                foreach (var node in Storage.Instance.PatientsByName.GetList())
+                {
+                    list.Add(node.Patient);
+                }
+            }
+            return list;
+        }
+
+        public ActionResult Statistics()
+        {
+            if (Storage.Instance.CountryStatistics != null)
+            {
+                return View(Storage.Instance.CountryStatistics);
+            }
+            else
+            {
+                return View(new Statistics());
+            }
         }
 
         public ActionResult HospitalsList()
@@ -181,6 +224,19 @@ namespace ProyectoED1.Controllers
                 }
             }
             return View(showHospital);
+        }
+
+        public ActionResult GetRecovered(Bed bed)
+        {
+            bed.Availability = true;
+            //Cambiar el estado del paciente
+            //Storage.Instance.PatientsByName();
+            //Storage.Instance.PatientsByLastName();
+            //Storage.Instance.PatientsByCUI();
+            //Storage.Instance.PatientsHash();
+            //Storage.Instance.BedHash();
+            //Storage.Instance.Hospitals();
+            return RedirectToAction("PatientsList");
         }
     }
 }

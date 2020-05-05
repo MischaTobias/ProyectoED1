@@ -1,34 +1,61 @@
-﻿@model IEnumerable<ProyectoED1.Models.PatientModel>
+﻿@*@model IEnumerable<ProyectoED1.Models.PatientModel>*@
+@model PagedList.IPagedList<ProyectoED1.Models.PatientStructure>
 
 @{
     ViewBag.Title = "PatientsList";
 }
 
-<h2>PatientsList</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+
+<h2>Lista de pacientes</h2>
+
+<br />
+<h5><strong>Búsqueda de pacientes</strong></h5>
+<p>Por favor seleccione el criterio por el cual desea buscar e introduzca el valor buscado, luego de ello presione "Buscar"</p>
+
+@using (Html.BeginForm("PatientsList", "Hospital", FormMethod.Get))
+{
+    <em>Criterios:</em>
+    <div>
+        @Html.RadioButton("criteria", "name")  Buscar por nombre <br />
+        @Html.RadioButton("criteria", "lastname")  Buscar por apellido <br />
+        @Html.RadioButton("criteria", "cui") Buscar por CUI/No. DPI <br />
+    </div>
+    @Html.TextBox("search")
+    <input type="submit" name="value" value="Buscar" />
+}
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CUI)
+            @Html.DisplayNameFor(model => model.First().CUI)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.First().Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.First().LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.First().Status)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Hospital)
+            @Html.DisplayNameFor(model => model.First().Hospital)
         </th>
     </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CUI)
@@ -45,12 +72,38 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Hospital)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
         </tr>
     }
 
 </table>
+
+<div>
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    de @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "PantientsList", new { page = 1 })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Prev", "PatientsList", new { page = Model.PageNumber - 1 })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Anterior
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "PatientsList", new { page = Model.PageNumber + 1 })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "PatientsList", new { page = Model.PageCount })
+    }
+    else
+    {
+        @:Siguiente >
+        @Html.Raw("")
+        @:>>
+    }
+</div>
