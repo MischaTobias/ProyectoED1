@@ -3,16 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ProyectoED1.Helpers;
 
 namespace ProyectoED1.Models
 {
     public class Hospital
     {
         public List<string> Departments { get; set; }
-        public PriorityQueue <PatientModel> InfectedPatients { get; set; }
-        public PriorityQueue <PatientModel> SuspiciousPatients { get; set; }
+        public PriorityQueue<PatientModel> InfectedPatients { get; set; }
+        public PriorityQueue<PatientModel> SuspiciousPatients { get; set; }
         public int[] Bedcodearray = new int[10];
-
+        public int Hospitalcode { get; set; }   
+        public string HospitalName { get; set; }
         public void GetDepartments(string Hospital)
         {
             Departments = new List<string>();
@@ -52,16 +54,15 @@ namespace ProyectoED1.Models
                     break;
             }
         }
-
         public bool BedFull()
         {
             bool IsFull = false;
             foreach (var item in Bedcodearray)
             {
-                //if(Search Hash the bed.Availability ==true){
-                IsFull = true;
-                //}            
-
+                if(Storage.Instance.BedHash.Search(item).Value.Availability == true)
+                {
+                    IsFull = true;
+                }       
             }
             return IsFull;
         }
@@ -72,22 +73,6 @@ namespace ProyectoED1.Models
         public bool SuspiciousQueueFull()
         {
             return SuspiciousPatients.IsFull();
-        }
-        public void InfectionTest()
-        {
-            //PatientModel patient=  //Hash.Search(SuspiciousPatients.Delete().Key);
-            //Realizar la prueba
-            if (patient.IsInfected)
-            {
-                if (!InfectedQueueFull)
-                {
-                    InfectedPatients.Insert(patient);
-                }
-                else
-                {
-                    //En caso la lista de enfermos este llena
-                }
-            }
-        }
+        }       
     }
 }

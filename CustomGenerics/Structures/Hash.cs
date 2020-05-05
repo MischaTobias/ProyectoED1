@@ -122,7 +122,22 @@ namespace CustomGenerics.Structures
             }
             code = (code * 3) % 100;
             return code;
-
+        }
+        private int GetCode(string Key, int Multiplier)
+        {
+            int code = Key.Length * 11 % (Multiplier*10);
+            while(code < Multiplier * 10 || code >= (Multiplier+1)*10)
+            {
+                if(code >= (Multiplier + 1) * 10)
+                {
+                    code -= 10;
+                }
+                else
+                {
+                    code += 10;
+                }
+            }
+            return code;
         }
 
         public List<HashNode<T>> GetAsNodes()
@@ -141,9 +156,9 @@ namespace CustomGenerics.Structures
             return returnList;
         }
 
-        public List<HashNode<T>> GetSortedList(Func<T,bool> predicate)
+        public List<T> GetFilterList(Func<T,bool> predicate)
         {
-            List<HashNode<T>> SortedList = new List<HashNode<T>>();
+            List<T> FiltedList = new List<T>();
             var currentNode = new HashNode<T>();
             foreach (var task in TablaHash)
             {
@@ -152,12 +167,12 @@ namespace CustomGenerics.Structures
                 {
                     if (predicate(currentNode.Value))
                     {
-                        SortedList.Add(currentNode);
+                        FiltedList.Add(currentNode.Value);
                     }
                     currentNode = currentNode.Next;
                 }
             }
-            return SortedList;
+            return FiltedList;
         }
 
     }
