@@ -46,7 +46,7 @@ namespace ProyectoED1.Models
                     Departments.Add("San Marcos");
                     Departments.Add("Huehuetenango");
                     break;
-                case "Peten":
+                case "Petén":
                     Departments.Add("Petén");
                     Departments.Add("Alta Verapaz");
                     Departments.Add("Baja verapaz");

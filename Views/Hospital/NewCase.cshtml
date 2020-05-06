@@ -31,8 +31,30 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                <select class="form-control" id="Department" name="Department">
+                    <option>Seleccionar Departamento</option>
+                    <option>Alta Verapaz</option>
+                    <option>Baja Verapaz</option>
+                    <option>Chiquimula</option>
+                    <option>Petén</option>
+                    <option>El Progreso</option>
+                    <option>Quiché</option>
+                    <option>Escuintla</option>
+                    <option>Guatemala</option>
+                    <option>Huehuetenango</option>
+                    <option>Izabal</option>
+                    <option>Jalapa</option>
+                    <option>Jutiapa</option>
+                    <option>Quetzaltenango</option>
+                    <option>Retalhuleu</option>
+                    <option>Sacatepéquez</option>
+                    <option>San Marcos</option>
+                    <option>Santa Rosa</option>
+                    <option>Sololá</option>
+                    <option>Suchitepequez</option>
+                    <option>Totonicapán</option>
+                    <option>Zacapa</option>
+                </select>
             </div>
         </div>
 
