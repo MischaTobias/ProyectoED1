@@ -27,7 +27,7 @@ namespace ProyectoED1.Controllers
         {
             AddHospital("Capital");
             AddHospital("Quetzaltenango");
-            AddHospital("Peten");
+            AddHospital("Petén");
             AddHospital("Escuintla");
             AddHospital("Oriente");
         }

@@ -11,7 +11,7 @@ namespace CustomGenerics.Structures
     {
         HashNode<T>[] TablaHash = new HashNode<T>[100];
 
-        public void Insert(T InsertV, int key)
+        public void Insert(T InsertV, string key)
         {
             HashNode<T> T1 = new HashNode<T>();
             T1.Value = InsertV;
@@ -34,7 +34,7 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public HashNode<T> Search(int searchedKey)
+        public HashNode<T> Search(string searchedKey)
         {
             int code = GetCode(searchedKey);
 
@@ -68,7 +68,7 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public void Delete(int searchedKey)
+        public void Delete(string searchedKey)
         {
             int code = GetCode(searchedKey);
 
@@ -111,14 +111,13 @@ namespace CustomGenerics.Structures
                 }
             }
         }
-        private int GetCode(int Key)
+        private int GetCode(string Key)
         {
-            string key = Key.ToString();
-            int length = key.Length;
+            int length = Key.Length;
             int code = 0;
             for (int i = 0; i < length; i++)
             {
-               code +=  Convert.ToInt32(key.Substring(i, 1));
+               code +=  Convert.ToInt32(Key.Substring(i, 1));
             }
             code = (code * 3) % 100;
             return code;
