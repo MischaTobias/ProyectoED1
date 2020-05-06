@@ -1,4 +1,5 @@
-﻿using CustomGenerics.Structures;
+﻿
+using CustomGenerics.Structures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
