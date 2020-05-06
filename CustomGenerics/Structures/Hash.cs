@@ -11,11 +11,10 @@ namespace CustomGenerics.Structures
     {
         HashNode<T>[] TablaHash = new HashNode<T>[100];
 
-        public void Insert(T InsertV, int key)
+        public void Insert(T InsertV, string key)
         {
             HashNode<T> T1 = new HashNode<T>();
             T1.Value = InsertV;
-
             T1.Key = key;
             int code = GetCode(T1.Key);
             if (TablaHash[code] != null)
@@ -33,8 +32,76 @@ namespace CustomGenerics.Structures
                 TablaHash[code] = T1;
             }
         }
+        public void Insert (T InsertV, string key, int multiplier)
+        {
+            HashNode<T> T1 = new HashNode<T>();
+            T1.Value = InsertV;
+            T1.Key = key;
+            int Originalcode = GetCode(T1.Key, multiplier);
+            int code = Originalcode;
+            if (TablaHash[code] != null)
+            {
+                while(TablaHash[code] != null)
+                {
+                    if(code >= (multiplier + 1) * 10)
+                    {
+                        code = multiplier * 10;
+                    }
+                    else
+                    {
+                        code += 1;
+                    }
+                }
+            }
+            else
+            {
+                TablaHash[code] = T1;
+            }
+        }
 
-        public HashNode<T> Search(int searchedKey)
+        public HashNode<T> Search(string searchedKey, int multiplier)
+        {
+            int Originalcode = GetCode(searchedKey, multiplier);
+            int code = Originalcode;
+            bool Isfound = false;
+            while (!Isfound)
+            {
+                if (TablaHash[code] != null)
+                {
+                    if(searchedKey != TablaHash[code].Key)
+                    {
+                        if (code >= (multiplier + 1) * 10)
+                        {
+                            code = multiplier * 10;
+                        }
+                        else
+                        {
+                            code += 1;
+                        }
+                        if (code == Originalcode)
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        Isfound = true;
+                    }
+                        
+                }
+                else
+                {
+                    code += 1;
+                    if (code == Originalcode)
+                    {
+                        return null;
+                    }
+                }
+            }
+            return TablaHash[code];
+            
+        }
+        public HashNode<T> Search(string searchedKey)
         {
             int code = GetCode(searchedKey);
 
@@ -68,7 +135,7 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public void Delete(int searchedKey)
+        public void Delete(string searchedKey)
         {
             int code = GetCode(searchedKey);
 
@@ -111,14 +178,13 @@ namespace CustomGenerics.Structures
                 }
             }
         }
-        private int GetCode(int Key)
+        private int GetCode(string Key)
         {
-            string key = Key.ToString();
-            int length = key.Length;
+            int length = Key.Length;
             int code = 0;
             for (int i = 0; i < length; i++)
             {
-               code +=  Convert.ToInt32(key.Substring(i, 1));
+               code +=  Convert.ToInt32(Key.Substring(i, 1));
             }
             code = (code * 3) % 100;
             return code;
