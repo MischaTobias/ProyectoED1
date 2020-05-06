@@ -81,10 +81,6 @@ namespace ProyectoED1.Controllers
                         return View("NewCase");
                     }
                 }
-                var EuropeTrip = GetBool(collection["Europe"]);
-                var InfectedSibling = GetBool(collection["InfectedSibling"]);
-                var SocialMeeting = GetBool(collection["Socialmeeting"]);
-                var InfectedFriend = GetBool(collection["InfectedFriend"]);
                 var newPatient = new PatientModel()
                 {
                     Name = collection["Name"],
@@ -100,6 +96,7 @@ namespace ProyectoED1.Controllers
                     ArrivalDate = DateTime.Parse(collection["ArrivalDate"]),
                     Status = "Sospechoso"
                 };
+                newPatient.SetInfectionChance(GetBool(collection["Europe"]), GetBool(collection["InfectedSibling"]), GetBool(collection["Socialmeeting"]), GetBool(collection["InfectedFriend"]));
                 newPatient.PriorityAssignment();
                 var structurePatient = new PatientStructure()
                 {
@@ -113,7 +110,7 @@ namespace ProyectoED1.Controllers
                     Priority = newPatient.Priority,
                     Status = newPatient.Status
                 };
-                //Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
+                Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
                 Storage.Instance.PatientsByName.AddPatient(structurePatient, PatientStructure.CompareByName);
                 Storage.Instance.PatientsByLastName.AddPatient(structurePatient, PatientStructure.CompareByLastName);
                 Storage.Instance.PatientsByCUI.AddPatient(structurePatient, PatientStructure.CompareByCUI);
