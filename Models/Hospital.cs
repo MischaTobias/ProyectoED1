@@ -1,4 +1,5 @@
-﻿using CustomGenerics.Structures;
+﻿
+using CustomGenerics.Structures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,7 @@ namespace ProyectoED1.Models
         public List<string> Departments { get; set; }
         public PriorityQueue<PatientModel> InfectedQueue { get; set; }
         public PriorityQueue<PatientModel> SuspiciousQueue { get; set; }
-        public int[] Bedcodearray = new int[10];
+        public string[] Bedcodearray = new string[10];
         [Display(Name = "Camas usadas")]
         public int BedsInUse { get; set; }
         public int Hospitalcode { get; set; }   

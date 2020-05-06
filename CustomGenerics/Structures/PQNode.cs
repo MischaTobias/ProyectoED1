@@ -16,10 +16,11 @@ namespace CustomGenerics.Structures
         public int Priority;
         public DateTime DatePriority;
 
-        public PQNode(string key, DateTime Date, int priority)
+        public PQNode(string key, DateTime Date, T patient, int priority)
         {
             Key = key;
             DatePriority = Date;
+            Patient = patient;
             Priority = priority;
         }
     }
