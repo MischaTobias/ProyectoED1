@@ -15,7 +15,6 @@ namespace CustomGenerics.Structures
         {
             HashNode<T> T1 = new HashNode<T>();
             T1.Value = InsertV;
-
             T1.Key = key;
             int code = GetCode(T1.Key);
             if (TablaHash[code] != null)
@@ -33,7 +32,75 @@ namespace CustomGenerics.Structures
                 TablaHash[code] = T1;
             }
         }
+        public void Insert (T InsertV, string key, int multiplier)
+        {
+            HashNode<T> T1 = new HashNode<T>();
+            T1.Value = InsertV;
+            T1.Key = key;
+            int Originalcode = GetCode(T1.Key, multiplier);
+            int code = Originalcode;
+            if (TablaHash[code] != null)
+            {
+                while(TablaHash[code] != null)
+                {
+                    if(code >= (multiplier + 1) * 10)
+                    {
+                        code = multiplier * 10;
+                    }
+                    else
+                    {
+                        code += 1;
+                    }
+                }
+            }
+            else
+            {
+                TablaHash[code] = T1;
+            }
+        }
 
+        public HashNode<T> Search(string searchedKey, int multiplier)
+        {
+            int Originalcode = GetCode(searchedKey, multiplier);
+            int code = Originalcode;
+            bool Isfound = false;
+            while (!Isfound)
+            {
+                if (TablaHash[code] != null)
+                {
+                    if(searchedKey != TablaHash[code].Key)
+                    {
+                        if (code >= (multiplier + 1) * 10)
+                        {
+                            code = multiplier * 10;
+                        }
+                        else
+                        {
+                            code += 1;
+                        }
+                        if (code == Originalcode)
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        Isfound = true;
+                    }
+                        
+                }
+                else
+                {
+                    code += 1;
+                    if (code == Originalcode)
+                    {
+                        return null;
+                    }
+                }
+            }
+            return TablaHash[code];
+            
+        }
         public HashNode<T> Search(string searchedKey)
         {
             int code = GetCode(searchedKey);
