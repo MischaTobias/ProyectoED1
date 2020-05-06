@@ -6,16 +6,6 @@
 }
 
 
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-
-            window.onload = function () {
-                alert("@ViewBag.Message");
-            };
-    </script>
-}
-
 
 <h2>Lista de pacientes</h2>
 
@@ -23,14 +13,19 @@
 <h5><strong>Búsqueda de pacientes</strong></h5>
 <p>Por favor seleccione el criterio por el cual desea buscar e introduzca el valor buscado, luego de ello presione "Buscar"</p>
 
+<p style="color:darkred"><strong>@TempData["Error"]</strong></p>
+
 @using (Html.BeginForm("PatientsList", "Hospital", FormMethod.Get))
 {
-    <em>Criterios:</em>
-    <div>
-        @Html.RadioButton("criteria", "name")  Buscar por nombre <br />
-        @Html.RadioButton("criteria", "lastname")  Buscar por apellido <br />
-        @Html.RadioButton("criteria", "cui") Buscar por CUI/No. DPI <br />
-    </div>
+    <em><strong>Criterios:</strong></em>
+    <select class="form-control" id="criteria" name="criteria">
+        <option>Seleccionar Criterio</option>
+        <option>Nombre</option>
+        <option>Apellido</option>
+        <option>CUI/No. DPI</option>
+    </select>
+    //Obtenido de: https://www.tutorialsteacher.com/mvc/htmlhelper-dropdownlist-dropdownlistfor
+    <br />
     @Html.TextBox("search")
     <input type="submit" name="value" value="Buscar" />
 }

@@ -154,7 +154,7 @@ namespace ProyectoED1.Controllers
             int pageNumber = page ?? 1;
             if (criteria == null && search != null)
             {
-                ViewBag.Error = TempData["Por favor escoja un criterio de búsqueda."];
+                TempData["Error"] = "Por favor escoja un criterio de búsqueda.";
                 return View(patientsList.ToPagedList(pageNumber, pageSize));
             }
             else
