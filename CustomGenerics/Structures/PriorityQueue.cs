@@ -10,7 +10,6 @@ namespace CustomGenerics.Structures
     public class PriorityQueue<T> : ICloneable
     {
         public PQNode<T> Root;
-        [Display(Name = "")]
         public int PatientsNumber;
 
         public PriorityQueue()

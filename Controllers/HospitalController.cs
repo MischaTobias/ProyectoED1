@@ -228,37 +228,25 @@ namespace ProyectoED1.Controllers
 
         public ActionResult Hospital(string name, string advice)
         {
-            var showHospital = Storage.Instance.Hospitals.First();
-            foreach (var hospital in Storage.Instance.Hospitals)
-            {
-                if (hospital.HospitalName == name)
-                {
-                    showHospital = hospital;
-                }
-            }
+            var showHospital = Storage.Instance.Hospitals.Find(x => x.HospitalName == name);
             if (advice != "")
             {
-
+                TempData["Error"] = advice;
             }
             return View(showHospital);
         }
 
         public ActionResult Test(string hospital)
         {
-            foreach (var hosp in Storage.Instance.Hospitals)
+            var hosp = Storage.Instance.Hospitals.Find(x => x.HospitalName == hospital);
+            if (hosp.InfectedQueueFull())
             {
-                if (hosp.HospitalName == hospital)
-                {
-                    if (hosp.InfectedQueueFull())
-                    {
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
-                    }
-                    else
-                    {
-                        var patientCUI = hosp.SuspiciousQueue.GetFirst().Patient.CUI;
-                        //Storage.Instance.PatientsHash.Search(patientCUI).Value.InfectionTest();
-                    }
-                }
+                return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
+            }
+            else
+            {
+                var patientCUI = hosp.SuspiciousQueue.GetFirst().Patient.CUI;
+                //Storage.Instance.PatientsHash.Search(patientCUI).Value.InfectionTest();
             }
             return RedirectToAction("Hospital");
         }

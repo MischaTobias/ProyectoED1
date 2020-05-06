@@ -186,7 +186,7 @@ namespace CustomGenerics.Structures
             {
                code +=  Convert.ToInt32(Key.Substring(i, 1));
             }
-            code = (code * 3) % 100;
+            code = (code * 7) % 100;
             return code;
         }
         private int GetCode(string Key, int Multiplier)
