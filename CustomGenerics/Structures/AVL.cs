@@ -24,7 +24,7 @@ namespace CustomGenerics.Structures
                 currentNode = newNode;
                 Root = currentNode;
             }
-            else if (comparison.Invoke(currentNode.Patient, newNode.Patient) < 0)
+            else if (comparison.Invoke(newNode.Patient, currentNode.Patient) < 0)
             {
                 if (currentNode.LeftSon == null)
                 {
@@ -54,7 +54,7 @@ namespace CustomGenerics.Structures
 
         public void Delete(AVLNode<T> currentNode, AVLNode<T> value, Comparison<T> comparison)
         {
-            if (comparison.Invoke(currentNode.Patient, value.Patient) == 0)
+            if (comparison.Invoke(value.Patient, currentNode.Patient) == 0)
             {
                 if (currentNode.LeftSon != null)
                 {
@@ -80,7 +80,7 @@ namespace CustomGenerics.Structures
                     Balance(currentNode.Father);
                 }
             }
-            else if (comparison.Invoke(currentNode.Patient, value.Patient) < 0)
+            else if (comparison.Invoke(value.Patient, currentNode.Patient) < 0)
             {
                 Delete(currentNode.LeftSon, value, comparison);
             }
@@ -205,15 +205,12 @@ namespace CustomGenerics.Structures
 
         public List<AVLNode<T>> GetList()
         {
+            ReturningList = new List<AVLNode<T>>();
             if (Root != null)
             {
                 InOrder(Root);
-                return ReturningList;
             }
-            else
-            {
-                return new List<AVLNode<T>>();
-            }
+            return ReturningList;
         }
 
         private void InOrder(AVLNode<T> currentNode)
@@ -262,14 +259,14 @@ namespace CustomGenerics.Structures
                 return Search(Patient, node.LeftSon, comparison);
             }
         }
-        private List<T> Search(AVLNode<T> node, T patient, Comparison<T> comparison)
+        private List<T> Search(AVLNode<T> node, T Patient, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
             List<T> RepeatedValues = new List<T>();
-            if (comparison.Invoke(node.Patient, patient) == 0)
+            if (comparison.Invoke(Patient, node.Patient) == 0)
             {
                 Patients.Add(node.Patient);
-                RepeatedValues = Search(node.RightSon, patient, comparison);
+                RepeatedValues = Search(node.RightSon, Patient, comparison);
                 if (RepeatedValues.Count > 0)
                 {
                     foreach (var item in RepeatedValues)
@@ -277,7 +274,7 @@ namespace CustomGenerics.Structures
                         Patients.Add(item);
                     }
                 }
-                RepeatedValues = Search(node.LeftSon, patient, comparison);
+                RepeatedValues = Search(node.LeftSon, Patient, comparison);
                 if (RepeatedValues.Count > 0)
                 {
                     foreach (var item in RepeatedValues)
