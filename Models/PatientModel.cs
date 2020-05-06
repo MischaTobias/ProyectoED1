@@ -16,11 +16,10 @@ namespace ProyectoED1.Models
         public string Symptoms { get; set; } 
         [Display(Name = "Descripción del contagio")]
         public string InfectionDescription { get; set; }
-
-        public void InfectionTest(bool TraveltoEuropa, bool Knowninfected, bool Familiarinfected, bool ReunionWithSuspicious)
+        public int InfectionChance { get; set; }
+        public void SetInfectionChance(bool TraveltoEuropa, bool Knowninfected, bool Familiarinfected, bool ReunionWithSuspicious)
         {
             int InfectionChance = 5;
-            Random Rnd = new Random();
             if (TraveltoEuropa)
             {
                 InfectionChance += 10;
@@ -37,6 +36,10 @@ namespace ProyectoED1.Models
             {
                 InfectionChance += 5;
             }
+        }
+        public void InfectionTest()
+        {
+            Random Rnd = new Random();
             if (Rnd.Next(100) <= InfectionChance)
             {
                 IsInfected = true;
