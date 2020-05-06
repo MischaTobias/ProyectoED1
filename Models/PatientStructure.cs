@@ -89,5 +89,10 @@ namespace ProyectoED1.Models
         {
             return patient1.CUI.CompareTo(patient2.CUI);
         };
+
+        public static Comparison<PatientStructure> CompareByPriority = delegate (PatientStructure patient1, PatientStructure patient2)
+        {
+            return patient1.Priority.CompareTo(patient2.Priority);
+        }
     }
 }
