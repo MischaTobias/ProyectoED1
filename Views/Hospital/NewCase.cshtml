@@ -105,6 +105,8 @@
                 <br />
                 @Html.CheckBox("SocialMeeting", false) <strong>¿Ha participado en alguna reunión social con un sospechoso de <em>COVID-19</em>?</strong>
                 <br />
+                @Html.CheckBox("InfectedFriend", false) <strong>¿Conoce a alguien que esté contagiado con <em>COVID-19</em>?</strong>
+                <br />
                 <br />
                 <p><strong>Si desea agregar alguna descripción adicional del posible contagio puede ingresarla a continuación:</strong></p>
                 @Html.TextAreaFor(model => model.InfectionDescription, new { htmlAttributes = new { @class = "form-control" } })

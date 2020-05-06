@@ -195,7 +195,7 @@ namespace CustomGenerics.Structures
 
         }
 
-        public PQNode<T> Delete()
+        public PQNode<T> GetFirst()
         {
             PQNode<T> LastNode = SearchLastNode(Root, 1);
             PQNode<T> FirstNode = Root;
@@ -222,6 +222,7 @@ namespace CustomGenerics.Structures
             PatientsNumber--;
             return FirstNode;
         }
+
         private PQNode<T> SearchLastNode(PQNode<T> current, int number)
         {
             try

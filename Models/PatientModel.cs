@@ -16,12 +16,15 @@ namespace ProyectoED1.Models
         public string Symptoms { get; set; } 
         [Display(Name = "Descripción del contagio")]
         public string InfectionDescription { get; set; }
+        public bool EuropeTrip { get; set; }
+        public bool InfectedSibling { get; set; }
+        public bool SocialMeeting { get; set; }
 
-        public void InfectionTest(bool TraveltoEuropa, bool Knowninfected, bool Familiarinfected, bool ReunionWithSuspicious)
+        public void InfectionTest(bool EuropeTrip, bool Knowninfected, bool Familiarinfected, bool ReunionWithSuspicious)
         {
             int InfectionChance = 5;
             Random Rnd = new Random();
-            if (TraveltoEuropa)
+            if (EuropeTrip)
             {
                 InfectionChance += 10;
             }

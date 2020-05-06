@@ -11,6 +11,7 @@ namespace CustomGenerics.Structures
         public PQNode<T> Father;
         public PQNode<T> RightSon;
         public PQNode<T> LeftSon;
+        public T Patient;
         public string Key;
         public int Priority;
         public DateTime DatePriority;

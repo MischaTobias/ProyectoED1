@@ -81,6 +81,10 @@ namespace ProyectoED1.Controllers
                         return View("NewCase");
                     }
                 }
+                var EuropeTrip = GetBool(collection["Europe"]);
+                var InfectedSibling = GetBool(collection["InfectedSibling"]);
+                var SocialMeeting = GetBool(collection["Socialmeeting"]);
+                var InfectedFriend = GetBool(collection["InfectedFriend"]);
                 var newPatient = new PatientModel()
                 {
                     Name = collection["Name"],
@@ -124,13 +128,25 @@ namespace ProyectoED1.Controllers
             }
         }
 
+        private bool GetBool(string data)
+        {
+            if (data == "true,false")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void SendToHospital(PatientStructure patient)
         {
             foreach (var hospital in Storage.Instance.Hospitals)
             {
                 if (hospital.HospitalName == patient.Hospital)
                 {
-                    //hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
+                    hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
                 }
             }
         }
@@ -213,7 +229,7 @@ namespace ProyectoED1.Controllers
             return View(Storage.Instance.Hospitals);
         } 
 
-        public ActionResult Hospital(string name)
+        public ActionResult Hospital(string name, string advice)
         {
             var showHospital = Storage.Instance.Hospitals.First();
             foreach (var hospital in Storage.Instance.Hospitals)
@@ -223,7 +239,31 @@ namespace ProyectoED1.Controllers
                     showHospital = hospital;
                 }
             }
+            if (advice != "")
+            {
+
+            }
             return View(showHospital);
+        }
+
+        public ActionResult Test(string hospital)
+        {
+            foreach (var hosp in Storage.Instance.Hospitals)
+            {
+                if (hosp.HospitalName == hospital)
+                {
+                    if (hosp.InfectedQueueFull())
+                    {
+                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
+                    }
+                    else
+                    {
+                        var patientCUI = hosp.SuspiciousQueue.GetFirst().Patient.CUI;
+                        //Storage.Instance.PatientsHash.Search(patientCUI).Value.InfectionTest();
+                    }
+                }
+            }
+            return RedirectToAction("Hospital");
         }
 
         public ActionResult GetRecovered(Bed bed)

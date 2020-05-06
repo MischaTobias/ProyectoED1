@@ -16,6 +16,7 @@ namespace ProyectoED1.Models
         public PriorityQueue<PatientModel> InfectedQueue { get; set; }
         public PriorityQueue<PatientModel> SuspiciousQueue { get; set; }
         public int[] Bedcodearray = new int[10];
+        [Display(Name = "Camas usadas")]
         public int BedsInUse { get; set; }
         public int Hospitalcode { get; set; }   
 
