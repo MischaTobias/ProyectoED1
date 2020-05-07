@@ -10,12 +10,12 @@ namespace CustomGenerics.Structures
     public class Hash<T> where T : IComparable
     {
         public int Length;
-        public HashNode<T>[] TablaHash;
+        public HashNode<T>[] HashTable;
 
         public Hash(int length)
         {
             Length = length;
-            TablaHash = new HashNode<T>[Length];
+            HashTable = new HashNode<T>[Length];
         }
 
         public void Insert(T InsertV, string key)
@@ -24,9 +24,9 @@ namespace CustomGenerics.Structures
             T1.Value = InsertV;
             T1.Key = key;
             int code = GetCode(T1.Key);
-            if (TablaHash[code] != null)
+            if (HashTable[code] != null)
             {
-                HashNode<T> Aux = TablaHash[code];
+                HashNode<T> Aux = HashTable[code];
                 while (Aux.Next != null)
                 {
                     Aux = Aux.Next;
@@ -36,7 +36,7 @@ namespace CustomGenerics.Structures
             }
             else
             {
-                TablaHash[code] = T1;
+                HashTable[code] = T1;
             }
         }
 
@@ -47,9 +47,9 @@ namespace CustomGenerics.Structures
             T1.Key = key;
             int Originalcode = GetCode(T1.Key, multiplier);
             int code = Originalcode;
-            if (TablaHash[code] != null)
+            if (HashTable[code] != null)
             {
-                while(TablaHash[code] != null)
+                while(HashTable[code] != null)
                 {
                     if(code >= (multiplier + 1) * 10)
                     {
@@ -58,16 +58,20 @@ namespace CustomGenerics.Structures
                     else
                     {
                         code += 1;
+                        //if (code == Originalcode)
+                        //{
+                        //    avoid enqueue
+                        //}
                     }
                 }
-                if (TablaHash[code] == null)
+                if (HashTable[code] == null)
                 {
-                    TablaHash[code] = T1;
+                    HashTable[code] = T1;
                 }
             }
             else
             {
-                TablaHash[code] = T1;
+                HashTable[code] = T1;
             }
         }
 
@@ -78,9 +82,9 @@ namespace CustomGenerics.Structures
             bool Isfound = false;
             while (!Isfound)
             {
-                if (TablaHash[code] != null)
+                if (HashTable[code] != null)
                 {
-                    if(searchedKey != TablaHash[code].Key)
+                    if(searchedKey != HashTable[code].Key)
                     {
                         if (code >= (multiplier + 1) * 10)
                         {
@@ -110,7 +114,7 @@ namespace CustomGenerics.Structures
                     }
                 }
             }
-            return TablaHash[code];
+            return HashTable[code];
             
         }
 
@@ -118,12 +122,12 @@ namespace CustomGenerics.Structures
         {
             int code = GetCode(searchedKey);
 
-            if (TablaHash[code] != null)
+            if (HashTable[code] != null)
             {
 
-                if (TablaHash[code].Key != searchedKey)
+                if (HashTable[code].Key != searchedKey)
                 {
-                    HashNode<T> Aux = TablaHash[code];
+                    HashNode<T> Aux = HashTable[code];
                     while (Aux.Key != searchedKey && Aux.Next != null)
                     {
                         Aux = Aux.Next;
@@ -139,7 +143,7 @@ namespace CustomGenerics.Structures
                 }
                 else
                 {
-                    return TablaHash[code];
+                    return HashTable[code];
                 }
             }
             else
@@ -152,16 +156,16 @@ namespace CustomGenerics.Structures
         {
             int code = GetCode(searchedKey, multiplier);
 
-            while (TablaHash[code] == null)
+            while (HashTable[code] == null)
             {
                 code++;
             }
 
-            if (TablaHash[code] != null)
+            if (HashTable[code] != null)
             {
-                if (TablaHash[code].Key != searchedKey)
+                if (HashTable[code].Key != searchedKey)
                 {
-                    while (TablaHash[code].Key != searchedKey)
+                    while (HashTable[code].Key != searchedKey)
                     {
                         if (code >= (multiplier + 1) * 10)
                         {
@@ -172,20 +176,20 @@ namespace CustomGenerics.Structures
                             code += 1;
                         }
                     }
-                    if (TablaHash[code].Key == searchedKey)
+                    if (HashTable[code].Key == searchedKey)
                     {
-                        TablaHash[code] = null;
+                        HashTable[code] = null;
                     }
                 }
                 else
                 {
-                    if (TablaHash[code].Next != null)
+                    if (HashTable[code].Next != null)
                     {
-                        TablaHash[code] = TablaHash[code].Next;
+                        HashTable[code] = HashTable[code].Next;
                     }
                     else
                     {
-                        TablaHash[code] = TablaHash[code].Next;
+                        HashTable[code] = null;
                     }
                 }
             }
@@ -214,7 +218,14 @@ namespace CustomGenerics.Structures
                 }
                 else
                 {
-                    code += 10;
+                    if (HashTable[code] != null)
+                    {
+                        code += 1;
+                    }
+                    else
+                    {
+                        return code;
+                    }
                 }
             }
             return code;
@@ -224,7 +235,7 @@ namespace CustomGenerics.Structures
         {
             var returnList = new List<HashNode<T>>();
             var currentNode = new HashNode<T>();
-            foreach (var task in TablaHash)
+            foreach (var task in HashTable)
             {
                 currentNode = task;
                 while (currentNode != null)
@@ -240,7 +251,7 @@ namespace CustomGenerics.Structures
         {
             List<T> FiltedList = new List<T>();
             var currentNode = new HashNode<T>();
-            foreach (var task in TablaHash)
+            foreach (var task in HashTable)
             {
                 currentNode = task;
                 while (currentNode != null)
@@ -253,6 +264,11 @@ namespace CustomGenerics.Structures
                 }
             }
             return FiltedList;
+        }
+
+        public HashNode<T> GetT(int pos, int block)
+        {
+            return HashTable[pos + block];
         }
     }
 }

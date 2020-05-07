@@ -30,7 +30,7 @@ namespace ProyectoED1.Models
         /// <param name="ReunionWithSuspicious"></param> represents if the patient has had a meeting with a suspicios person.
         public void SetInfectionChance(bool TraveltoEuropa, bool Knowninfected, bool Familiarinfected, bool ReunionWithSuspicious)
         {
-            int InfectionChance = 5;
+            InfectionChance = 5;
             if (TraveltoEuropa)
             {
                 InfectionChance += 10;

@@ -259,6 +259,7 @@ namespace CustomGenerics.Structures
                 return Search(Patient, node.LeftSon, comparison);
             }
         }
+
         private List<T> Search(AVLNode<T> node, T Patient, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
@@ -317,5 +318,38 @@ namespace CustomGenerics.Structures
             }
 
         } 
+
+        public void ChangeValue(T newPatient, AVLNode<T> node, Comparison<T> comparison1, Comparison<T> comparison2)
+        {
+            if (node != null)
+            {
+                if (comparison1.Invoke(newPatient, node.Patient) < 0)
+                {
+                    ChangeValue(newPatient, node.LeftSon, comparison1, comparison2);
+                }
+                else if (comparison1.Invoke(newPatient, node.Patient) == 0)
+                {
+                    if (comparison2.Invoke(newPatient, node.Patient) == 0)
+                    {
+                        node.Patient = newPatient;
+                    }
+                    else
+                    {
+                        if (node.LeftSon != null)
+                        {
+                            ChangeValue(newPatient, node, comparison1, comparison2);
+                        }
+                        if (node.RightSon != null)
+                        {
+                            ChangeValue(newPatient, node, comparison1, comparison2);
+                        }
+                    }
+                }
+                else
+                {
+                    ChangeValue(newPatient, node.RightSon, comparison1, comparison2);
+                }
+            }
+        }
     }
 }

@@ -310,6 +310,7 @@ namespace ProyectoED1.Controllers
         /// <summary>
         /// If advice has a value, it shows an advice on the view.
         /// It shows the hospitals data in the view. This is data such as bedslist, suspiciousqueue and infectedqueue.
+        /// Also, in order to show the hospital queues, generates a list copy for each queue.
         /// </summary>
         /// <param name="name"></param> string that contains the hospital's name.
         /// <param name="advice"></param> string that gives advice of an error.
@@ -317,6 +318,29 @@ namespace ProyectoED1.Controllers
         public ActionResult Hospital(string name, string advice)
         {
             var showHospital = Storage.Instance.Hospitals.Find(x => x.HospitalName == name);
+            var newqueue = new PriorityQueue<PatientStructure>();
+            showHospital.InfectedList = new List<PatientStructure>();
+            showHospital.SuspiciousList = new List<PatientStructure>();
+            var queueClone = showHospital.InfectedQueue;
+            var node = queueClone.GetFirst();
+            while (node != null)
+            {
+                showHospital.InfectedList.Add(node.Patient);
+                newqueue.AddPatient(node.Patient.CUI, node.Patient.ArrivalDate, node.Patient, node.Patient.Priority);
+                node = queueClone.GetFirst();
+            }
+            showHospital.InfectedQueue = newqueue;
+            newqueue = new PriorityQueue<PatientStructure>();
+            queueClone = showHospital.SuspiciousQueue;
+            node = queueClone.GetFirst();
+            while (node != null)
+            {
+                showHospital.SuspiciousList.Add(node.Patient);
+                newqueue.AddPatient(node.Patient.CUI, node.Patient.ArrivalDate, node.Patient, node.Patient.Priority);
+                node = queueClone.GetFirst();
+            }
+            showHospital.SuspiciousQueue = newqueue;
+
             if (advice != "")
             {
                 TempData["Error"] = advice;
@@ -338,29 +362,101 @@ namespace ProyectoED1.Controllers
             var hosp = Storage.Instance.Hospitals.Find(x => x.HospitalName == hospital);
             if (hosp.InfectedQueueFull())
             {
-                return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
+                return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
             }
             else if (hosp.InfectedQueue.Root != null)
             {
                 if (hosp.InfectedQueue.Root.Patient.Priority < hosp.SuspiciousQueue.Root.Patient.Priority)
                 {
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19, por favor libere una cama." });
+                    if (hosp.BedFull())
+                    {
+                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19, por favor libere una cama." });
+                    }
+                    else
+                    {
+                        var patient = hosp.InfectedQueue.GetFirst().Patient;
+                        Storage.Instance.BedHash.Insert(new Bed() { Patient = patient, Availability = "No Disponible" }, patient.CUI, GetMultiplier(patient.Hospital));
+                    }
+                }
+                else
+                {
+                    var patient = hosp.SuspiciousQueue.GetFirst().Patient;
+                    var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
+                    if (infected)
+                    {
+                        patient.Status = "Contagiado";
+                        patient.IsInfected = true;
+                        Storage.Instance.PatientsHash.Search(patient.CUI).Value.PriorityAssignment();
+                        patient.PriorityAssignment();
+                        Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
+                        Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
+                        Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                        Storage.Instance.CountryStatistics.Suspicious--;
+                        Storage.Instance.CountryStatistics.Infected++;
+                        if (hosp.BedFull())
+                        {
+                            Storage.Instance.Hospitals.Find(x => x.HospitalName == patient.Hospital).InfectedQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient, patient.Priority);
+                        }
+                        else
+                        {
+                            Storage.Instance.BedHash.Insert(new Bed() { Patient = patient, Availability = "No Disponible" }, patient.CUI, GetMultiplier(patient.Hospital));
+                        }
+                        Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList = new List<Bed>();
+                        for (int i = 0; i < 10; i++)
+                        {
+                            var node = Storage.Instance.BedHash.GetT(i, GetMultiplier(hospital));
+                            if (node != null)
+                            {
+                                Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Add(node.Value);
+                            }
+                        }
+                        Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
+                        return RedirectToAction("Hospital", new { name = hosp.HospitalName });
+                    }
                 }
             }
             else
             {
+                if (hosp.SuspiciousQueue.Root == null)
+                {
+                    return RedirectToAction("Hospital");
+                }
                 var patient = hosp.SuspiciousQueue.GetFirst().Patient;
                 var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
                 if (infected)
                 {
-                    //Change patients priority and status
+                    patient.Status = "Contagiado";
+                    patient.IsInfected = true;
+                    Storage.Instance.PatientsHash.Search(patient.CUI).Value.PriorityAssignment();
+                    patient.PriorityAssignment();
+                    Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
+                    Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
+                    Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
                     Storage.Instance.CountryStatistics.Suspicious--;
                     Storage.Instance.CountryStatistics.Infected++;
-                    Storage.Instance.BedHash.Insert(new Bed() { Patient = patient }, patient.CUI, GetMultiplier(patient));
+                    if (hosp.BedFull())
+                    {
+                        Storage.Instance.Hospitals.Find(x => x.HospitalName == patient.Hospital).InfectedQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient, patient.Priority); 
+                    }
+                    else
+                    {
+                        Storage.Instance.BedHash.Insert(new Bed() { Patient = patient, Availability = "No Disponible" }, patient.CUI, GetMultiplier(patient.Hospital));
+                    }
+                    Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList = new List<Bed>();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        var node = Storage.Instance.BedHash.GetT(i, GetMultiplier(hospital));
+                        if (node != null)
+                        {
+                            Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Add(node.Value);
+                        }
+                    }
+                    Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
+                    return RedirectToAction("Hospital", new { name = hosp.HospitalName });
                 }
                 else
                 {
-
+                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
                 }
             }
             return RedirectToAction("Hospital");
@@ -375,17 +471,17 @@ namespace ProyectoED1.Controllers
         /// <returns></returns>
         public ActionResult GetRecovered(Bed bed)
         {
-            Storage.Instance.BedHash.Delete(bed.Patient.CUI, GetMultiplier(bed.Patient));
-            bed.Availability = "Disponible";
+            bed.Patient.IsInfected = false;
+            bed.Patient.Status = "Recuperado";
+            Storage.Instance.BedHash.Delete(bed.Patient.CUI, GetMultiplier(bed.Patient.Hospital));
             Storage.Instance.PatientsHash.Search(bed.Patient.CUI).Value.Status = "Recuperado";
-            //Cambiar el estado del paciente
-            //Storage.Instance.PatientsByName();
-            //Storage.Instance.PatientsByLastName();
-            //Storage.Instance.PatientsByCUI();
-            //Storage.Instance.PatientsHash();
-            //Storage.Instance.BedHash();
-            //Storage.Instance.Hospitals();
-            return RedirectToAction("PatientsList");
+            Storage.Instance.PatientsHash.Search(bed.Patient.CUI).Value.IsInfected = false;
+            var patient = bed.Patient;
+            Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
+            Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
+            Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+            Storage.Instance.CountryStatistics.Infected--;
+            return RedirectToAction("Hospital", new { name = patient.Hospital });
         }
 
         /// <summary>
@@ -393,20 +489,20 @@ namespace ProyectoED1.Controllers
         /// </summary>
         /// <param name="patient"></param> patient that will be inserted into bed's hash.
         /// <returns></returns>
-        private int GetMultiplier(PatientStructure patient)
+        private int GetMultiplier(string hospital)
         {
-            switch (patient.Hospital)
+            switch (hospital)
             {
                 case "Capital":
-                    return 0;
-                case "Quetzaltenango":
                     return 1;
-                case "Petén":
+                case "Quetzaltenango":
                     return 2;
-                case "Escuintla":
+                case "Petén":
                     return 3;
-                case "Oriente":
+                case "Escuintla":
                     return 4;
+                case "Oriente":
+                    return 5;
             }
             return -1;
         }

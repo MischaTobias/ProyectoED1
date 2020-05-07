@@ -15,6 +15,7 @@ namespace CustomGenerics.Structures
         /// </summary>
         public PQNode<T> Root;
         public int PatientsNumber;
+        public PriorityQueue<T> queueCopy;
 
         /// <summary>
         /// Constructor, stablishes patients number as 0.
@@ -227,10 +228,11 @@ namespace CustomGenerics.Structures
             }
             PQNode<T> LastNode = SearchLastNode(Root, 1);
             PQNode<T> FirstNode = (PQNode<T>)Root.Clone();
-            Root.Key = LastNode.Key;
-            Root.Priority = LastNode.Priority;
-            Root.Patient = LastNode.Patient;
-            Root.DatePriority = LastNode.DatePriority;
+            var LastNodeCopy = (PQNode<T>)LastNode.Clone();
+            Root.Key = LastNodeCopy.Key;
+            Root.Priority = LastNodeCopy.Priority;
+            Root.Patient = LastNodeCopy.Patient;
+            Root.DatePriority = LastNodeCopy.DatePriority;
             if (LastNode.Father == null)
             {
                 Root = null;
@@ -306,8 +308,8 @@ namespace CustomGenerics.Structures
 
         public IEnumerator<T> GetEnumerator()
         {
-            var queueCopy = (PriorityQueue<T>)this.Clone();
-            var current = queueCopy.GetFirst();
+            var queueCopy = new PriorityQueue<T>() { Root = this.Root, PatientsNumber = this.PatientsNumber };
+            var current = queueCopy.Root;
             while (current != null)
             {
                 yield return current.Patient;

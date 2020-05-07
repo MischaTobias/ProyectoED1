@@ -19,7 +19,8 @@ namespace ProyectoED1.Models
         public List<string> Departments { get; set; }
         public PriorityQueue<PatientStructure> InfectedQueue { get; set; }
         public PriorityQueue<PatientStructure> SuspiciousQueue { get; set; }
-        public string[] Bedcodearray = new string[10];
+        public List<PatientStructure> InfectedList { get; set; }
+        public List<PatientStructure> SuspiciousList { get; set; }
         [Display(Name = "Camas usadas")]
         public int BedsInUse { get; set; } 
         public List<Bed> BedList { get; set; }
