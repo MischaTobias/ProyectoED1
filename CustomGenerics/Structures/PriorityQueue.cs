@@ -205,7 +205,7 @@ namespace CustomGenerics.Structures
                 return null;
             }
             PQNode<T> LastNode = SearchLastNode(Root, 1);
-            PQNode<T> FirstNode = Root;
+            PQNode<T> FirstNode = (PQNode<T>)Root.Clone();
             Root.Key = LastNode.Key;
             Root.Priority = LastNode.Priority;
             Root.Patient = LastNode.Patient;

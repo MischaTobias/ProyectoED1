@@ -38,18 +38,21 @@ namespace ProyectoED1.Models
                 InfectionChance += 5;
             }
         }
-        public void InfectionTest()
+
+        public bool InfectionTest()
         {
             Random Rnd = new Random();
             if (Rnd.Next(100) <= InfectionChance)
             {
                 IsInfected = true;
                 Status = "Infected";
+                return true;
             }
             else
             {
                 Status = "NotInfected";
                 Hospital = null;
+                return false;
             }
         }
     }

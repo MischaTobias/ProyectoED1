@@ -207,6 +207,7 @@ namespace ProyectoED1.Controllers
 
         public ActionResult Statistics()
         {
+            Storage.Instance.CountryStatistics.GetPercentage();
             if (Storage.Instance.CountryStatistics != null)
             {
                 return View(Storage.Instance.CountryStatistics);
@@ -239,21 +240,35 @@ namespace ProyectoED1.Controllers
             {
                 return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
             }
-            else if (hosp.InfectedQueue.Root.Patient.Priority < hosp.SuspiciousQueue.Root.Patient.Priority)
+            else if (hosp.InfectedQueue.Root != null)
             {
-                return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19." });
+                if (hosp.InfectedQueue.Root.Patient.Priority < hosp.SuspiciousQueue.Root.Patient.Priority)
+                {
+                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19." });
+                }
             }
             else
             {
-                var patientCUI = hosp.SuspiciousQueue.GetFirst().Patient.CUI;
-                //Storage.Instance.PatientsHash.Search(patientCUI).Value.InfectionTest();
+                var patient = hosp.SuspiciousQueue.GetFirst().Patient;
+                var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
+                if (infected)
+                {
+                    Storage.Instance.CountryStatistics.Suspicious--;
+                    Storage.Instance.CountryStatistics.Infected++;
+                    Storage.Instance.BedHash.Insert(new Bed() { Patient = patient }, patient.CUI, GetMultiplier(patient));
+                }
+                else
+                {
+
+                }
             }
             return RedirectToAction("Hospital");
         }
 
         public ActionResult GetRecovered(Bed bed)
         {
-            bed.Availability = true;
+            Storage.Instance.BedHash.Delete(bed.Patient.CUI, GetMultiplier(bed.Patient));
+            bed.Availability = "Disponible";
             //Cambiar el estado del paciente
             //Storage.Instance.PatientsByName();
             //Storage.Instance.PatientsByLastName();
@@ -262,6 +277,24 @@ namespace ProyectoED1.Controllers
             //Storage.Instance.BedHash();
             //Storage.Instance.Hospitals();
             return RedirectToAction("PatientsList");
+        }
+
+        private int GetMultiplier(PatientStructure patient)
+        {
+            switch (patient.Hospital)
+            {
+                case "Capital":
+                    return 0;
+                case "Quetzaltenango":
+                    return 1;
+                case "Petén":
+                    return 2;
+                case "Escuintla":
+                    return 3;
+                case "Oriente":
+                    return 4;
+            }
+            return -1;
         }
     }
 }
