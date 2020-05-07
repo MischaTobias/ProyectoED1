@@ -58,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.Patient.Name)
             </td>
             <td>
-                @Html.ActionLink("Cambiar a Recuperado", "GetRecovered", new { id = item })
+                @Html.ActionLink("Cambiar a Recuperado", "GetRecovered", "Hospital", new { bed = item.Patient })
                 @* Sends the bed as a parameter to GetRecovered() *@
             </td>
         </tr>

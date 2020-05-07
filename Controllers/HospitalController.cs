@@ -469,19 +469,18 @@ namespace ProyectoED1.Controllers
         /// </summary>
         /// <param name="bed"></param> bed that has been selected to set empty.
         /// <returns></returns>
-        public ActionResult GetRecovered(Bed bed)
+        public ActionResult GetRecovered(PatientStructure Patient)
         {
-            bed.Patient.IsInfected = false;
-            bed.Patient.Status = "Recuperado";
-            Storage.Instance.BedHash.Delete(bed.Patient.CUI, GetMultiplier(bed.Patient.Hospital));
-            Storage.Instance.PatientsHash.Search(bed.Patient.CUI).Value.Status = "Recuperado";
-            Storage.Instance.PatientsHash.Search(bed.Patient.CUI).Value.IsInfected = false;
-            var patient = bed.Patient;
-            Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-            Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-            Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+            Patient.IsInfected = false;
+            Patient.Status = "Recuperado";
+            Storage.Instance.BedHash.Delete(Patient.CUI, GetMultiplier(Patient.Hospital));
+            Storage.Instance.PatientsHash.Search(Patient.CUI).Value.Status = "Recuperado";
+            Storage.Instance.PatientsHash.Search(Patient.CUI).Value.IsInfected = false;
+            Storage.Instance.PatientsByCUI.ChangeValue(Patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
+            Storage.Instance.PatientsByName.ChangeValue(Patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
+            Storage.Instance.PatientsByLastName.ChangeValue(Patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
             Storage.Instance.CountryStatistics.Infected--;
-            return RedirectToAction("Hospital", new { name = patient.Hospital });
+            return RedirectToAction("Hospital", new { name = Patient.Hospital });
         }
 
         /// <summary>
