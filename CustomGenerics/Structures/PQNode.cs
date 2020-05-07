@@ -8,6 +8,9 @@ namespace CustomGenerics.Structures
 {
     public class PQNode<T> : ICloneable
     {
+        /// <summary>
+        /// Variable declaration.
+        /// </summary>
         public PQNode<T> Father;
         public PQNode<T> RightSon;
         public PQNode<T> LeftSon;
@@ -15,7 +18,13 @@ namespace CustomGenerics.Structures
         public string Key;
         public int Priority;
         public DateTime DatePriority;
-
+        /// <summary>
+        /// PQNode Constructor
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="Date"></param>
+        /// <param name="patient"></param>
+        /// <param name="priority"></param>
         public PQNode(string key, DateTime Date, T patient, int priority)
         {
             Key = key;
@@ -23,7 +32,9 @@ namespace CustomGenerics.Structures
             Patient = patient;
             Priority = priority;
         }
-
+        /// <summary>
+        /// ICloneable implemetion clones the node
+        /// </summary>
         public object Clone()
         {
             return this.MemberwiseClone();

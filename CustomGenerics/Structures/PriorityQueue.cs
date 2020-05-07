@@ -77,7 +77,10 @@ namespace CustomGenerics.Structures
 
             }
         }
-
+        /// <summary>
+        /// Compare priorities and change if necessary, sort from current node to root
+        /// </summary>
+        /// <param name="current"></param> Represents the node being evaluated
         private void OrderDowntoUp(PQNode<T> current)
         {
             if (current.Father != null)
@@ -96,7 +99,10 @@ namespace CustomGenerics.Structures
                 OrderDowntoUp(current.Father);
             }
         }
-
+        /// <summary>
+        /// Compare priorities and change if necessary, sort from root to the leaves
+        /// </summary>
+        /// <param name="current"></param> Represents the node being evaluated
         private void OrderUptoDown(PQNode<T> current)
         {
             if (current.RightSon != null && current.LeftSon != null)
@@ -202,7 +208,10 @@ namespace CustomGenerics.Structures
                 }
             }
         }
-
+        /// <summary>
+        /// Swaps the current node with its father
+        /// </summary>
+        /// <param name="node"></param> The node being exchanged
         private void ChangeNodes(PQNode<T> node)
         {
             var Priority1 = node.Priority;
@@ -219,7 +228,10 @@ namespace CustomGenerics.Structures
             node.Father.Patient = Patient1;
 
         }
-
+        /// <summary>
+        /// Remove the first node from the Priority Queue.
+        /// </summary>
+        /// <returns></returns>
         public PQNode<T> GetFirst()
         {
             if (Root == null)
@@ -254,7 +266,12 @@ namespace CustomGenerics.Structures
             PatientsNumber--;
             return FirstNode;
         }
-
+        /// <summary>
+        /// It searches the last node added to the Priority Queue.
+        /// </summary>
+        /// <param name="current"></param> The current node being evaluated.
+        /// <param name="number"></param> Total number of elements
+        /// <returns></returns>
         private PQNode<T> SearchLastNode(PQNode<T> current, int number)
         {
             try
@@ -301,11 +318,16 @@ namespace CustomGenerics.Structures
 
         }
 
+        /// <summary>
+        /// ICloneable implemetion, clones the PriorityQueue
+        /// </summary>
         public object Clone()
         {
             return this.MemberwiseClone();
         }
-
+        /// <summary>
+        /// IEnumerator implemetion 
+        /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
             var queueCopy = new PriorityQueue<T>() { Root = this.Root, PatientsNumber = this.PatientsNumber };
