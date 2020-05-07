@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CustomGenerics.Structures
 {
-    public class PriorityQueue<T> : ICloneable
+    public class PriorityQueue<T> : ICloneable, IEnumerable<T>
     {
         public PQNode<T> Root;
         public int PatientsNumber;
@@ -199,6 +200,10 @@ namespace CustomGenerics.Structures
 
         public PQNode<T> GetFirst()
         {
+            if (Root == null)
+            {
+                return null;
+            }
             PQNode<T> LastNode = SearchLastNode(Root, 1);
             PQNode<T> FirstNode = Root;
             Root.Key = LastNode.Key;
@@ -276,6 +281,22 @@ namespace CustomGenerics.Structures
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var queueCopy = (PriorityQueue<T>)this.Clone();
+            var current = queueCopy.GetFirst();
+            while (current != null)
+            {
+                yield return current.Patient;
+                current = queueCopy.GetFirst();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 

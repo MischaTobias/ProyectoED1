@@ -6,6 +6,7 @@ using System.Linq;
 using PagedList;
 using System.Web;
 using System.Web.Mvc;
+using CustomGenerics.Structures;
 
 namespace ProyectoED1.Controllers
 {
@@ -157,10 +158,10 @@ namespace ProyectoED1.Controllers
 
         public ActionResult PatientsList(int? page, string search, string criteria)
         {
-            var patientsList = new List<PatientStructure>();
+            var patientsList = GetPatients(null, null);
             int pageSize = 10;
             int pageNumber = page ?? 1;
-            if (criteria == null && search != null)
+            if (criteria == "Seleccionar Criterio" && search != "")
             {
                 TempData["Error"] = "Por favor escoja un criterio de búsqueda.";
                 return View(patientsList.ToPagedList(pageNumber, pageSize));
@@ -176,27 +177,27 @@ namespace ProyectoED1.Controllers
         {
             var list = new List<PatientStructure>();
             var patient = new PatientStructure();
-            if (search != null)
+            if (search != null && search != "")
             {
                 switch (criteria)
                 {
-                    case "name":
+                    case "Nombre":
                         patient.Name = search;
-                        //list = Storage.Instance.PatientsByName.Search(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName);
+                        list = Storage.Instance.PatientsByName.Search(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName);
                         break;
-                    case "lastname":
+                    case "Apellido":
                         patient.LastName = search;
-                        //list = Storage.Instance.PatientsByLastName.Search(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName);
+                        list = Storage.Instance.PatientsByLastName.Search(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName);
                             break;
-                    case "cui":
+                    case "CUI/No. DPI":
                         patient.CUI = search;
-                        //list = Storage.Instance.PatientsByCUI.Search(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI);
+                        list = Storage.Instance.PatientsByCUI.Search(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI);
                         break;
                 }
             }
             else
             {
-                foreach (var node in Storage.Instance.PatientsByName.GetList())
+                foreach (var node in Storage.Instance.PatientsByCUI.GetList())
                 {
                     list.Add(node.Patient);
                 }
