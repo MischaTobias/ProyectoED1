@@ -263,26 +263,53 @@ namespace CustomGenerics.Structures
         {
             List<T> Patients = new List<T>();
             List<T> RepeatedValues = new List<T>();
-            if (comparison.Invoke(Patient, node.Patient) == 0)
-            {
-                Patients.Add(node.Patient);
-                RepeatedValues = Search(node.RightSon, Patient, comparison);
-                if (RepeatedValues.Count > 0)
+            if (node != null)
+            {  
+                if (comparison.Invoke(Patient, node.Patient) == 0)
                 {
-                    foreach (var item in RepeatedValues)
+                    Patients.Add(node.Patient);
+                    RepeatedValues = Search(node.RightSon, Patient, comparison);
+                    if (RepeatedValues.Count > 0)
                     {
-                        Patients.Add(item);
+                        foreach (var item in RepeatedValues)
+                        {
+                            Patients.Add(item);
+                        }
                     }
+                    RepeatedValues = Search(node.LeftSon, Patient, comparison);
+                    if (RepeatedValues.Count > 0)
+                    {
+                        foreach (var item in RepeatedValues)
+                        {
+                            Patients.Add(item);
+                        }
+                    }
+                    return Patients;
                 }
-                RepeatedValues = Search(node.LeftSon, Patient, comparison);
-                if (RepeatedValues.Count > 0)
+                else if (comparison.Invoke(Patient, node.Patient)>0)
                 {
-                    foreach (var item in RepeatedValues)
+                    RepeatedValues = Search(node.RightSon, Patient, comparison);
+                    if (RepeatedValues.Count > 0)
                     {
-                        Patients.Add(item);
+                        foreach (var item in RepeatedValues)
+                        {
+                            Patients.Add(item);
+                        }
                     }
+                    return Patients;
                 }
-                return Patients;
+                else
+                {
+                    RepeatedValues = Search(node.LeftSon, Patient, comparison);
+                    if (RepeatedValues.Count > 0)
+                    {
+                        foreach (var item in RepeatedValues)
+                        {
+                            Patients.Add(item);
+                        }
+                    }
+                    return Patients;
+                }
             }
             else
             {
