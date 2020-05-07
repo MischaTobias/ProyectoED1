@@ -8,6 +8,9 @@ namespace ProyectoED1.Models
 {
     public class Statistics
     {
+        /// <summary>
+        /// Variable Declaration
+        /// </summary>
         [Display(Name = "Contagiados")]
         public int Infected { get; set; }
         [Display(Name = "Sospechosos")]
@@ -17,6 +20,9 @@ namespace ProyectoED1.Models
         [Display(Name = "Cantidad de Egresados")]
         public int Recovered { get; set; }
 
+        /// <summary>
+        /// Constructor, stablishes the values as 0
+        /// </summary>
         public Statistics()
         {
             Infected = 0;
@@ -25,6 +31,9 @@ namespace ProyectoED1.Models
             Recovered = 0;
         }
 
+        /// <summary>
+        /// Changes the positive percentage value according to the suspicious and infected value.
+        /// </summary>
         public void GetPercentage()
         {
             PositivePercentage = Infected / Suspicious;

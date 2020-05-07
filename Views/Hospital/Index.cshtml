@@ -2,6 +2,7 @@
     ViewBag.Title = "Index";
 }
 
+@* Changes Layout for Index view, hides the Menu button at the top *@
 @{
     Layout = "~/Views/Shared/PrevLayout.cshtml";
 }
@@ -13,6 +14,7 @@
 
 <br />
 
+@* Shows different buttons that return different values in the Option position at collection[] *@
 @using (Html.BeginForm("Index", "Hospital", FormMethod.Post))
 {
     <br />

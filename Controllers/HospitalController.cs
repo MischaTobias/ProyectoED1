@@ -113,6 +113,10 @@ namespace ProyectoED1.Controllers
                 {
                     ModelState.AddModelError("Age", "Por favor ingrese una edad válida");
                 }
+                else if (collection["Department"] == "Seleccionar Departamento")
+                {
+                    ModelState.AddModelError("Department", "Por favor seleccione un departamento");
+                }
                 foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
                 {
                     if (patient.Value.CUI == collection["CUI"])
@@ -349,6 +353,7 @@ namespace ProyectoED1.Controllers
                 var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
                 if (infected)
                 {
+                    //Change patients priority and status
                     Storage.Instance.CountryStatistics.Suspicious--;
                     Storage.Instance.CountryStatistics.Infected++;
                     Storage.Instance.BedHash.Insert(new Bed() { Patient = patient }, patient.CUI, GetMultiplier(patient));

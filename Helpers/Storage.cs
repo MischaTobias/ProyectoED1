@@ -9,6 +9,9 @@ namespace ProyectoED1.Helpers
 {
     public class Storage
     {
+        /// <summary>
+        /// Singleton implementation.
+        /// </summary>
         public static Storage _instance = null;
 
         public static Storage Instance
@@ -20,6 +23,9 @@ namespace ProyectoED1.Helpers
             }
         }
 
+        /// <summary>
+        /// Variable declaration
+        /// </summary>
         public Hash<Bed> BedHash = new Hash<Bed>(50);
         public Hash<PatientModel> PatientsHash = new Hash<PatientModel>(100);
         public AVL<PatientStructure> PatientsByName = new AVL<PatientStructure>();

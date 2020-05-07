@@ -10,24 +10,45 @@ namespace CustomGenerics.Structures
 {
     public class PriorityQueue<T> : ICloneable, IEnumerable<T>
     {
+        /// <summary>
+        /// Variable declaration.
+        /// </summary>
         public PQNode<T> Root;
         public int PatientsNumber;
 
+        /// <summary>
+        /// Constructor, stablishes patients number as 0.
+        /// </summary>
         public PriorityQueue()
         {
             PatientsNumber = 0;
         }
 
+        /// <summary>
+        /// Returns true if the root is null, else returns false.
+        /// </summary>
+        /// <returns></returns>
         public bool IsEmpty()
         {
             return Root == null ? true : false;
         }
 
+        /// <summary>
+        /// Returns true if the queue already has 10 patients, else returns false.
+        /// </summary>
+        /// <returns></returns>
         public bool IsFull()
         {
             return PatientsNumber == 10 ? true : false;
         }
 
+        /// <summary>
+        /// Adds a new patient to the priorityQueue and calls OrderDowntoUp()
+        /// </summary>
+        /// <param name="key"></param> represents the node's key.
+        /// <param name="date"></param> represents date as a secondary priority criteria.
+        /// <param name="patient"></param> represents the value that's been inserted to the queue
+        /// <param name="priority"></param> represents the patient's priority.
         public void AddPatient(string key, DateTime date, T patient, int priority)
         {
             var newNode = new PQNode<T>(key, date, patient, priority);
