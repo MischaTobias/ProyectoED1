@@ -9,20 +9,18 @@ namespace ProyectoED1.Models
     public class Bed : IComparable
     {
         [Display(Name = "Disponibilidad")]
-        public bool Availability { get; set; }
-        public int Bedcode { get; set; }
+        public string Availability { get; set; }
         public PatientStructure Patient { get; set; }
-        public string Hospital { get; set; }
 
         public int CompareTo(object obj)
         {
-            return this.Bedcode.CompareTo(((Bed)obj).Bedcode);
+            return this.Patient.CompareTo(((Bed)obj).Patient);
         }
 
         public void EmptyBed()
         {
             Patient = null;
-            Availability = true;
+            Availability = "Disponible";
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomGenerics.Structures
 {
-    public class PQNode<T>
+    public class PQNode<T> : ICloneable
     {
         public PQNode<T> Father;
         public PQNode<T> RightSon;
@@ -22,6 +22,11 @@ namespace CustomGenerics.Structures
             DatePriority = Date;
             Patient = patient;
             Priority = priority;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

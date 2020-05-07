@@ -18,8 +18,7 @@ namespace ProyectoED1.Models
         public PriorityQueue<PatientStructure> SuspiciousQueue { get; set; }
         public string[] Bedcodearray = new string[10];
         [Display(Name = "Camas usadas")]
-        public int BedsInUse { get; set; }
-        public int Hospitalcode { get; set; }   
+        public int BedsInUse { get; set; } 
 
         public List<Bed> BedList { get; set; }
         public List<PatientModel> InfectedList { get; set; }
@@ -73,20 +72,22 @@ namespace ProyectoED1.Models
         }
         public bool BedFull()
         {
-            bool IsFull = false;
+            bool IsFull = true;
             foreach (var item in Bedcodearray)
             {
-                if(Storage.Instance.BedHash.Search(item).Value.Availability == true)
+                if(Storage.Instance.BedHash.Search(item).Value.Availability == "Disponible")
                 {
-                    IsFull = true;
+                    IsFull = false;
                 }       
             }
             return IsFull;
         }
+
         public bool InfectedQueueFull()
         {
             return InfectedQueue.IsFull();
         }
+
         public bool SuspiciousQueueFull()
         {
             return SuspiciousQueue.IsFull();

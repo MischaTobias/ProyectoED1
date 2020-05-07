@@ -9,9 +9,9 @@ namespace CustomGenerics.Structures
 {
     public class Hash<T> where T : IComparable
     {
-
         public int Length;
-        HashNode<T>[] TablaHash;
+        public HashNode<T>[] TablaHash;
+
         public Hash(int length)
         {
             Length = length;
@@ -39,6 +39,7 @@ namespace CustomGenerics.Structures
                 TablaHash[code] = T1;
             }
         }
+
         public void Insert (T InsertV, string key, int multiplier)
         {
             HashNode<T> T1 = new HashNode<T>();
@@ -58,6 +59,10 @@ namespace CustomGenerics.Structures
                     {
                         code += 1;
                     }
+                }
+                if (TablaHash[code] == null)
+                {
+                    TablaHash[code] = T1;
                 }
             }
             else
@@ -108,6 +113,7 @@ namespace CustomGenerics.Structures
             return TablaHash[code];
             
         }
+
         public HashNode<T> Search(string searchedKey)
         {
             int code = GetCode(searchedKey);
@@ -142,34 +148,33 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public void Delete(string searchedKey)
+        public void Delete(string searchedKey, int multiplier)
         {
-            int code = GetCode(searchedKey);
+            int code = GetCode(searchedKey, multiplier);
+
+            while (TablaHash[code] == null)
+            {
+                code++;
+            }
 
             if (TablaHash[code] != null)
             {
-
                 if (TablaHash[code].Key != searchedKey)
                 {
-                    HashNode<T> Aux = TablaHash[code];
-                    while (Aux.Key != searchedKey && Aux.Next != null)
+                    while (TablaHash[code].Key != searchedKey)
                     {
-                        Aux = Aux.Next;
+                        if (code >= (multiplier + 1) * 10)
+                        {
+                            code = multiplier * 10;
+                        }
+                        else
+                        {
+                            code += 1;
+                        }
                     }
-                    if (Aux.Key == searchedKey)
+                    if (TablaHash[code].Key == searchedKey)
                     {
-                        if (Aux.Next != null)
-                        {
-                            Aux.Next.Previous = Aux.Previous;
-                        }
-                        if (Aux.Previous != null)
-                        {
-                            Aux.Previous.Next = Aux.Next;
-                        }
-                        if (Aux.Next == null && Aux.Previous == null)
-                        {
-                            Aux = null;
-                        }
+                        TablaHash[code] = null;
                     }
                 }
                 else
@@ -185,6 +190,7 @@ namespace CustomGenerics.Structures
                 }
             }
         }
+
         private int GetCode(string Key)
         {
             int length = Key.Length;
@@ -193,9 +199,10 @@ namespace CustomGenerics.Structures
             {
                code +=  Convert.ToInt32(Key.Substring(i, 1));
             }
-            code = (code * 7) % 100;
+            code = (code * 7) % Length;
             return code;
         }
+
         private int GetCode(string Key, int Multiplier)
         {
             int code = Key.Length * 11 % (Multiplier*10);
@@ -247,6 +254,5 @@ namespace CustomGenerics.Structures
             }
             return FiltedList;
         }
-
     }
 }

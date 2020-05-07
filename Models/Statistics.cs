@@ -24,5 +24,10 @@ namespace ProyectoED1.Models
             PositivePercentage = 0;
             Recovered = 0;
         }
+
+        public void GetPercentage()
+        {
+            PositivePercentage = Infected / Suspicious;
+        }
     }
 }
