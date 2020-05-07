@@ -186,12 +186,15 @@ namespace CustomGenerics.Structures
             var Priority1 = node.Priority;
             var Key1 = node.Key;
             var Date1 = node.DatePriority;
+            var Patient1 = node.Patient;
             node.Priority = node.Father.Priority;
             node.Key = node.Father.Key;
             node.DatePriority = node.Father.DatePriority;
+            node.Patient = node.Father.Patient;
             node.Father.Priority = Priority1;
             node.Father.Key = Key1;
             node.Father.DatePriority = Date1;
+            node.Father.Patient = Patient1;
 
         }
 

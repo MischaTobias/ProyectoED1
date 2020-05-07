@@ -29,7 +29,7 @@ namespace ProyectoED1.Models
 
         public void PriorityAssignment()
         {
-            if (Age > 60)
+            if (Age >= 60)
             {
                 if (IsInfected)
                 {
@@ -40,7 +40,7 @@ namespace ProyectoED1.Models
                     Priority = 4;
                 }
             }
-            else if (17 < Age && Age <= 60)
+            else if (17 < Age && Age < 60)
             {
                 if (IsInfected)
                 {

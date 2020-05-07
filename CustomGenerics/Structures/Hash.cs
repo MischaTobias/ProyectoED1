@@ -9,7 +9,14 @@ namespace CustomGenerics.Structures
 {
     public class Hash<T> where T : IComparable
     {
-        HashNode<T>[] TablaHash = new HashNode<T>[100];
+
+        public int Length;
+        HashNode<T>[] TablaHash;
+        public Hash(int length)
+        {
+            Length = length;
+            TablaHash = new HashNode<T>[Length];
+        }
 
         public void Insert(T InsertV, string key)
         {
@@ -186,7 +193,7 @@ namespace CustomGenerics.Structures
             {
                code +=  Convert.ToInt32(Key.Substring(i, 1));
             }
-            code = (code * 3) % 100;
+            code = (code * 3) % Length;
             return code;
         }
         private int GetCode(string Key, int Multiplier)
