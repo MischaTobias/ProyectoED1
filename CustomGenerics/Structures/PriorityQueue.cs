@@ -203,6 +203,8 @@ namespace CustomGenerics.Structures
             PQNode<T> FirstNode = Root;
             Root.Key = LastNode.Key;
             Root.Priority = LastNode.Priority;
+            Root.Patient = LastNode.Patient;
+            Root.DatePriority = LastNode.DatePriority;
             if (LastNode.Father == null)
             {
                 Root = null;
