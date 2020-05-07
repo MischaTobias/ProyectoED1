@@ -13,11 +13,14 @@
 <h5><strong>Búsqueda de pacientes</strong></h5>
 <p>Por favor seleccione el criterio por el cual desea buscar e introduzca el valor buscado, luego de ello presione "Buscar"</p>
 
+@* Shows an error that's contained at TempData["Error] *@
 <p style="color:darkred"><strong>@TempData["Error"]</strong></p>
 
+@* Form that sends the info to the PatientsListview *@
 @using (Html.BeginForm("PatientsList", "Hospital", FormMethod.Get))
 {
     <em><strong>Criterios:</strong></em>
+@* DropDownList that shows the search criteria. *@
     <select class="form-control" id="criteria" name="criteria">
         <option>Seleccionar Criterio</option>
         <option>Nombre</option>
@@ -30,6 +33,7 @@
     <input type="submit" name="value" value="Buscar" />
 }
 
+@* Display for the patient's info contained in patients hash *@
 <table class="table">
     <tr>
         <th>
@@ -72,6 +76,7 @@
 
 </table>
 
+@* Paged List actions *@
 <div>
     Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
     de @Model.PageCount

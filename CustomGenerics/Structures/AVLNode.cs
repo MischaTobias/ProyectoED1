@@ -8,11 +8,18 @@ namespace CustomGenerics.Structures
 {
     public class AVLNode<T> where T : IComparable
     {
+        /// <summary>
+        /// Variable declaration
+        /// </summary>
         public AVLNode<T> LeftSon { get; set; }
         public AVLNode<T> RightSon { get; set; }
         public AVLNode<T> Father { get; set; }
         public T Patient { get; set; }
 
+        /// <summary>
+        /// Returns the node's balance index
+        /// </summary>
+        /// <returns></returns>
         public int GetBalanceIndex()
         {
             if (this.LeftSon != null && this.RightSon != null)
@@ -36,6 +43,10 @@ namespace CustomGenerics.Structures
             }
         }
 
+        /// <summary>
+        /// Returns the node's tree height.
+        /// </summary>
+        /// <returns></returns>
         public int GetTreeHeight()
         {
             if (this.LeftSon == null && this.RightSon == null)

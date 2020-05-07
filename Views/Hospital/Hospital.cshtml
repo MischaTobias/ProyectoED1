@@ -6,7 +6,7 @@
 
 <h2>Hospital</h2>
 
-
+@*Display for Hospital's name and its beds in use.*@
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -29,7 +29,7 @@
 </div>
 
 <h5><strong>Listado de camas:</strong></h5>
-
+@* List for the hospital's beds *@
 <br />
 <table class="table">
     <tr>
@@ -59,6 +59,7 @@
             </td>
             <td>
                 @Html.ActionLink("Cambiar a Recuperado", "GetRecovered", new { id = item })
+                @* Sends the bed as a parameter to GetRecovered() *@
             </td>
         </tr>
     }
@@ -66,20 +67,21 @@
 
 <h5><strong>Cola de Contagiados:</strong></h5>
 
+@* Display for InfectedQueue *@
 <br />
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedList.First().CUI)
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().CUI)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedList.First().Name)
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().Name)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedList.First().LastName)
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedList.First().Age)
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().Age)
         </th>
 
     </tr>
@@ -108,21 +110,23 @@
 <br />
 
 @Html.ActionLink("Realizar prueba", "Test", new { hospital = Model.HospitalName })
+@* Sends the hospital's name as a parameter to Test() *@
 <br />
 <br />
+@* Display for SuspiciousQueue *@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(Model => Model.SuspiciousList.First().CUI)
+            @Html.DisplayNameFor(Model => Model.SuspiciousQueue.First().CUI)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.SuspiciousList.First().Name)
+            @Html.DisplayNameFor(Model => Model.SuspiciousQueue.First().Name)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.SuspiciousList.First().LastName)
+            @Html.DisplayNameFor(Model => Model.SuspiciousQueue.First().LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.SuspiciousList.First().Age)
+            @Html.DisplayNameFor(Model => Model.SuspiciousQueue.First().Age)
         </th>
 
     </tr>

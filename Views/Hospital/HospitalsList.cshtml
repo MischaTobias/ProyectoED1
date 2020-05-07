@@ -6,6 +6,7 @@
 
 <h2>Lista de hospitales</h2>
 
+@* Display for hospital's list *@
 <table class="table">
     <tr>
         <th>
@@ -39,6 +40,7 @@
         </td>
         <td>
             @Html.ActionLink("Ir al Hospital", "Hospital", new { name = item.HospitalName, advice = "" })
+            @* Sends the current hospital's name and advice as "" to Hospital() *@
         </td>
     </tr>
 }

@@ -8,6 +8,9 @@ namespace ProyectoED1.Models
 {
     public class PatientStructure : IComparable
     {
+        /// <summary>
+        /// Variable declaration
+        /// </summary>
         public string CUI { get; set; }
         [Display(Name = "Nombre")]
         public string Name { get; set; }
@@ -22,11 +25,19 @@ namespace ProyectoED1.Models
         [Display(Name = "Fecha de ingreso")]
         public DateTime ArrivalDate { get; set; }
 
+        /// <summary>
+        /// IComparable implementation, compares CUI values.
+        /// </summary>
+        /// <param name="obj"></param> patient to compare.
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             return this.CUI.CompareTo(((PatientStructure)obj).CUI);
         }
 
+        /// <summary>
+        /// Assigns the patient's priority according to its age and status.
+        /// </summary>
         public void PriorityAssignment()
         {
             if (Age >= 60)
@@ -75,6 +86,9 @@ namespace ProyectoED1.Models
             }
         }
 
+        /// <summary>
+        /// Comparison delegates that compare different patient attributes.
+        /// </summary>
         public static Comparison<PatientStructure> CompareByName = delegate (PatientStructure patient1, PatientStructure patient2)
         {
             return patient1.Name.CompareTo(patient2.Name);

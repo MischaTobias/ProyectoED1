@@ -6,6 +6,7 @@
 
 <h2>Agregar Sospechoso</h2>
 
+@* Displays textboxes for the user to input the patient's required data *@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -28,35 +29,37 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select class="form-control" id="Department" name="Department">
-                    <option>Seleccionar Departamento</option>
-                    <option>Alta Verapaz</option>
-                    <option>Baja Verapaz</option>
-                    <option>Chiquimula</option>
-                    <option>Petén</option>
-                    <option>El Progreso</option>
-                    <option>Quiché</option>
-                    <option>Escuintla</option>
-                    <option>Guatemala</option>
-                    <option>Huehuetenango</option>
-                    <option>Izabal</option>
-                    <option>Jalapa</option>
-                    <option>Jutiapa</option>
-                    <option>Quetzaltenango</option>
-                    <option>Retalhuleu</option>
-                    <option>Sacatepéquez</option>
-                    <option>San Marcos</option>
-                    <option>Santa Rosa</option>
-                    <option>Sololá</option>
-                    <option>Suchitepequez</option>
-                    <option>Totonicapán</option>
-                    <option>Zacapa</option>
-                </select>
-            </div>
+        @* DropDownList obtained from: https://www.tutorialsteacher.com/mvc/htmlhelper-dropdownlist-dropdownlistfor *@
+    <div class="form-group">
+        @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select class="form-control" id="Department" name="Department">
+                <option>Seleccionar Departamento</option>
+                <option>Alta Verapaz</option>
+                <option>Baja Verapaz</option>
+                <option>Chiquimula</option>
+                <option>Petén</option>
+                <option>El Progreso</option>
+                <option>Quiché</option>
+                <option>Escuintla</option>
+                <option>Guatemala</option>
+                <option>Huehuetenango</option>
+                <option>Izabal</option>
+                <option>Jalapa</option>
+                <option>Jutiapa</option>
+                <option>Quetzaltenango</option>
+                <option>Retalhuleu</option>
+                <option>Sacatepéquez</option>
+                <option>San Marcos</option>
+                <option>Santa Rosa</option>
+                <option>Sololá</option>
+                <option>Suchitepequez</option>
+                <option>Totonicapán</option>
+                <option>Zacapa</option>
+            </select>
         </div>
+        @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+    </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Municipality, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -95,6 +98,7 @@
             <input id="ArrivalDate" type="datetime-local" name="ArrivalDate" />
         </div>
 
+        @* Shows different textboxes in order to get the values to calculate the patient's infection chance *@
         <div class="form-group">
             @Html.LabelFor(model => model.InfectionDescription, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
