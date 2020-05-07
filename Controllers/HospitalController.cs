@@ -38,8 +38,8 @@ namespace ProyectoED1.Controllers
             {
                 HospitalName = hospital,
                 BedsInUse = 0,
-                InfectedQueue = new CustomGenerics.Structures.PriorityQueue<PatientModel>(),
-                SuspiciousQueue = new CustomGenerics.Structures.PriorityQueue<PatientModel>()
+                InfectedQueue = new CustomGenerics.Structures.PriorityQueue<PatientStructure>(),
+                SuspiciousQueue = new CustomGenerics.Structures.PriorityQueue<PatientStructure>()
             };
             newHospital.GetDepartments();
             Storage.Instance.Hospitals.Add(newHospital);
@@ -139,13 +139,8 @@ namespace ProyectoED1.Controllers
 
         private void SendToHospital(PatientStructure patient)
         {
-            foreach (var hospital in Storage.Instance.Hospitals)
-            {
-                if (hospital.HospitalName == patient.Hospital)
-                {
-                    hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient.Priority);
-                }
-            }
+            var hospital = Storage.Instance.Hospitals.First(x => x.HospitalName == patient.Hospital);
+            hospital.SuspiciousQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient, patient.Priority);
         }
 
         private string GetHospital(string department)
@@ -228,37 +223,29 @@ namespace ProyectoED1.Controllers
 
         public ActionResult Hospital(string name, string advice)
         {
-            var showHospital = Storage.Instance.Hospitals.First();
-            foreach (var hospital in Storage.Instance.Hospitals)
-            {
-                if (hospital.HospitalName == name)
-                {
-                    showHospital = hospital;
-                }
-            }
+            var showHospital = Storage.Instance.Hospitals.Find(x => x.HospitalName == name);
             if (advice != "")
             {
-
+                TempData["Error"] = advice;
             }
             return View(showHospital);
         }
 
         public ActionResult Test(string hospital)
         {
-            foreach (var hosp in Storage.Instance.Hospitals)
+            var hosp = Storage.Instance.Hospitals.Find(x => x.HospitalName == hospital);
+            if (hosp.InfectedQueueFull())
             {
-                if (hosp.HospitalName == hospital)
-                {
-                    if (hosp.InfectedQueueFull())
-                    {
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
-                    }
-                    else
-                    {
-                        var patientCUI = hosp.SuspiciousQueue.GetFirst().Patient.CUI;
-                        //Storage.Instance.PatientsHash.Search(patientCUI).Value.InfectionTest();
-                    }
-                }
+                return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
+            }
+            else if (hosp.InfectedQueue.Root.Patient.Priority < hosp.SuspiciousQueue.Root.Patient.Priority)
+            {
+                return RedirectToAction("Hospital", new { name = hosp.HospitalName, testmade = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19." });
+            }
+            else
+            {
+                var patientCUI = hosp.SuspiciousQueue.GetFirst().Patient.CUI;
+                //Storage.Instance.PatientsHash.Search(patientCUI).Value.InfectionTest();
             }
             return RedirectToAction("Hospital");
         }

@@ -20,8 +20,8 @@ namespace ProyectoED1.Helpers
             }
         }
 
-        public Hash<Bed> BedHash = new Hash<Bed>();
-        public Hash<PatientModel> PatientsHash = new Hash<PatientModel>();
+        public Hash<Bed> BedHash = new Hash<Bed>(50);
+        public Hash<PatientModel> PatientsHash = new Hash<PatientModel>(100);
         public AVL<PatientStructure> PatientsByName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByLastName = new AVL<PatientStructure>();
         public AVL<PatientStructure> PatientsByCUI = new AVL<PatientStructure>();
