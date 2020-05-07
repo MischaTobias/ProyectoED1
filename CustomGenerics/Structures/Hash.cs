@@ -9,15 +9,25 @@ namespace CustomGenerics.Structures
 {
     public class Hash<T> where T : IComparable
     {
+        /// <summary>
+        /// Variable declaration
+        /// </summary>
         public int Length;
         public HashNode<T>[] TablaHash;
-
+        /// <summary>
+        /// Constructor, stablishes the length of the array in the Hash
+        /// </summary>
+        /// <param name="length"></param> Length wanted for the array
         public Hash(int length)
         {
             Length = length;
             TablaHash = new HashNode<T>[Length];
         }
-
+        /// <summary>
+        /// Inserts a new node into the hash.
+        /// </summary>
+        /// <param name="InsertV"></param> The value of the node that is being inserted
+        /// <param name="key"></param> The key used to add into the Hash
         public void Insert(T InsertV, string key)
         {
             HashNode<T> T1 = new HashNode<T>();
@@ -39,7 +49,12 @@ namespace CustomGenerics.Structures
                 TablaHash[code] = T1;
             }
         }
-
+        /// <summary>
+        /// Second type of insert
+        /// </summary>
+        /// <param name="InsertV"></param> Value of the new node.
+        /// <param name="key"></param> Key used to insert the new node.
+        /// <param name="multiplier"></param> Number used to establish the range used for the series .
         public void Insert (T InsertV, string key, int multiplier)
         {
             HashNode<T> T1 = new HashNode<T>();
@@ -70,7 +85,12 @@ namespace CustomGenerics.Structures
                 TablaHash[code] = T1;
             }
         }
-
+        /// <summary>
+        /// Function that searches an object in the hash
+        /// </summary>
+        /// <param name="searchedKey"></param> The key that it is needed to search the element.
+        /// <param name="multiplier"></param> Number used to establish the range used for the series.
+        /// <returns></returns>
         public HashNode<T> Search(string searchedKey, int multiplier)
         {
             int Originalcode = GetCode(searchedKey, multiplier);
@@ -113,7 +133,11 @@ namespace CustomGenerics.Structures
             return TablaHash[code];
             
         }
-
+        /// <summary>
+        /// Second type to search
+        /// </summary>
+        /// <param name="searchedKey"></param> The key that it is needed to search.
+        /// <returns></returns>
         public HashNode<T> Search(string searchedKey)
         {
             int code = GetCode(searchedKey);
@@ -147,7 +171,11 @@ namespace CustomGenerics.Structures
                 return null;
             }
         }
-
+        /// <summary>
+        /// Delete function
+        /// </summary>
+        /// <param name="searchedKey"></param> The key that it is needed to search the element that it will be erased.
+        /// <param name="multiplier"></param> Number used to establish the range used for the series
         public void Delete(string searchedKey, int multiplier)
         {
             int code = GetCode(searchedKey, multiplier);
@@ -190,7 +218,11 @@ namespace CustomGenerics.Structures
                 }
             }
         }
-
+        /// <summary>
+        /// Get the code to insert the node in the hash
+        /// </summary>
+        /// <param name="Key"></param> The key that it will used to get the code
+        /// <returns></returns>
         private int GetCode(string Key)
         {
             int length = Key.Length;
@@ -202,7 +234,11 @@ namespace CustomGenerics.Structures
             code = (code * 7) % Length;
             return code;
         }
-
+        /// <summary>
+        /// Second get the code
+        /// </summary>
+        /// <param name="Key"></param> The key that it will used to get the code
+        /// <param name="Multiplier"></param> Number used to establish the range used for the series
         private int GetCode(string Key, int Multiplier)
         {
             int code = Key.Length * 11 % (Multiplier*10);
@@ -219,7 +255,9 @@ namespace CustomGenerics.Structures
             }
             return code;
         }
-
+        /// <summary>
+        /// Get a list of all nodes in the hash
+        /// </summary>
         public List<HashNode<T>> GetAsNodes()
         {
             var returnList = new List<HashNode<T>>();
@@ -235,7 +273,11 @@ namespace CustomGenerics.Structures
             }
             return returnList;
         }
-
+        /// <summary>
+        /// Get a list of items that fulfill a condition
+        /// </summary>
+        /// <param name="predicate"></param> The condition to add to the list
+        /// <returns></returns>
         public List<T> GetFilterList(Func<T,bool> predicate)
         {
             List<T> FiltedList = new List<T>();

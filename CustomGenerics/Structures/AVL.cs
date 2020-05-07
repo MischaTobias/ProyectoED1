@@ -8,17 +8,34 @@ namespace CustomGenerics.Structures
 {
     public class AVL<T> where T : IComparable
     {
+        /// <summary>
+        /// Variable declaration
+        /// </summary>
         public AVLNode<T> Root;
         private List<AVLNode<T>> ReturningList;
-
+       
+        /// <summary>
+        ///Creates the node and then sends it to another procedure to insert it in the AVL.
+        /// </summary>
+        /// <param name="value"></param> Represents the value of the new node.
+        /// <param name="comparison"></param> Represents the method that is being used to compare.
         public void AddPatient(T value, Comparison<T> comparison)
         {
             var newNode = new AVLNode<T>() { Patient = value };
             Insert(Root, newNode, comparison);
+            
         }
-
+        /// <summary>
+        ///It goes looking for the position in the AVL by looking if its greater or lower, then add its.
+        ///if the node being inserted is equal to the current node, it is added in the rightson
+        ///after being added, the node is send it to a procedure to balance it.
+        /// </summary>
+        /// <param name="currentNode"></param> Represents the node that is being evaluated
+        /// <param name="newNode"></param> Represents the node that is being added.
+        /// <param name="comparison"></param> Represents the method that is being used to compare.
         private void Insert(AVLNode<T> currentNode, AVLNode<T> newNode, Comparison<T> comparison)
         {
+
             if (currentNode == null && currentNode == Root)
             {
                 currentNode = newNode;
@@ -51,9 +68,16 @@ namespace CustomGenerics.Structures
                 }
             }
         }
-
+        /// <summary>
+        ///The procedure searches recursively to the node that is going to delete
+        ///Then it is deleted, an send it to balance node by node recursively till the root
+        /// </summary>
+        /// <param name="currentNode"></param> Represents the node that is being evaluated
+        /// <param name="value"></param> Represents the searched value
+        /// <param name="comparison"></param> Represents the method that is being used to compare.
         public void Delete(AVLNode<T> currentNode, AVLNode<T> value, Comparison<T> comparison)
         {
+
             if (comparison.Invoke(value.Patient, currentNode.Patient) == 0)
             {
                 if (currentNode.LeftSon != null)
@@ -89,7 +113,11 @@ namespace CustomGenerics.Structures
                 Delete(currentNode.RightSon, value, comparison);
             }
         }
-
+        /// <summary>
+        /// Find the leftmost node on the right side
+        /// </summary>
+        /// <param name="currentNode"></param> Represents the node being evaluated.
+        /// <returns></returns>
         private AVLNode<T> GetReplacementLeft(AVLNode<T> currentNode)
         {
             if (currentNode.RightSon != null)
@@ -101,7 +129,11 @@ namespace CustomGenerics.Structures
                 return currentNode;
             }
         }
-
+        /// <summary>
+        /// Find the rightmost node on the left side
+        /// </summary>
+        /// <param name="currentNode"></param> Represents the node being evaluated.
+        /// <returns></returns>
         private AVLNode<T> GetReplacementRight(AVLNode<T> currentNode)
         {
             if (currentNode.LeftSon != null)
@@ -113,7 +145,10 @@ namespace CustomGenerics.Structures
                 return currentNode;
             }
         }
-
+        /// <summary>
+        /// Calculate the balance factor, and decide the necessary rotation
+        /// </summary>
+        /// <param name="node"></param> Represents the node being evaluated.
         private void Balance(AVLNode<T> node)
         {
             if (node.GetBalanceIndex() == -2)
@@ -145,7 +180,10 @@ namespace CustomGenerics.Structures
                 Balance(node.Father);
             }
         }
-
+        ///<summary>
+        ///The node is exposed to a simple clockwise rotation
+        ///</summary>
+        /// <param name="node"></param> Represents the root of the three that it will be rotated
         private void RightRotation(AVLNode<T> node)
         {
             AVLNode<T> newLeft = node.LeftSon.RightSon;
@@ -174,7 +212,10 @@ namespace CustomGenerics.Structures
                 Root = node.Father;
             }
         }
-
+        /// <summary>
+        ///The node is exposed to counterclockwise rotation
+        /// </summary>
+        /// <param name="node"></param> Represents the root of the three that it will be rotated
         private void LeftRotation(AVLNode<T> node)
         {
             AVLNode<T> newRight = node.RightSon.LeftSon;
@@ -202,7 +243,9 @@ namespace CustomGenerics.Structures
                 Root = node.Father;
             }
         }
-
+        ///<summary>
+        ///An InOrder route is performed to obtain a list with the items in alphabetical order
+        ///</summary>
         public List<AVLNode<T>> GetList()
         {
             ReturningList = new List<AVLNode<T>>();
@@ -212,9 +255,12 @@ namespace CustomGenerics.Structures
             }
             return ReturningList;
         }
-
-        private void InOrder(AVLNode<T> currentNode)
-        {
+        /// <summary>
+        /// The InOrder route, evaluated by the leftson, the root and then the rightson.
+        /// </summary>
+        /// <param name="currentNode"></param> Represents the node being evaluated.
+        private void InOrder(AVLNode<T> currentNode) 
+        { 
             if (currentNode.LeftSon != null)
             {
                 InOrder(currentNode.LeftSon);
@@ -225,7 +271,13 @@ namespace CustomGenerics.Structures
                 InOrder(currentNode.RightSon);
             }
         }
-
+        /// <summary>
+        /// Find all nodes that are equal to the searched parameter, and return a list of them
+        /// </summary>
+        /// <param name="Patient"></param> Represents the searched key.
+        /// <param name="node"></param> Represents the node being evaluated.
+        /// <param name="comparison"></param> Represents the method that is being used to compare.
+        /// <returns></returns>
         public List<T> Search(T Patient, AVLNode<T> node, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
@@ -259,6 +311,13 @@ namespace CustomGenerics.Structures
                 return Search(Patient, node.LeftSon, comparison);
             }
         }
+        /// <summary>
+        /// Search recursively the nodes
+        /// </summary>
+        /// <param name="node"></param> Represents the node being evaluated
+        /// <param name="Patient"></param> Represents the searched key.
+        /// <param name="comparison"></param> Represents the method that is being used to compare.
+        /// <returns></returns>
         private List<T> Search(AVLNode<T> node, T Patient, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
