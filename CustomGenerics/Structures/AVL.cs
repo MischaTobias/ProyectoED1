@@ -226,7 +226,7 @@ namespace CustomGenerics.Structures
             }
         }
 
-        private List<T> Search(T Patient, AVLNode<T> node, Comparison<T> comparison)
+        public List<T> Search(T Patient, AVLNode<T> node, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
             if(comparison.Invoke(Patient, node.Patient) == 0)
