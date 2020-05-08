@@ -444,11 +444,11 @@ namespace CustomGenerics.Structures
                     {
                         if (node.LeftSon != null)
                         {
-                            ChangeValue(newPatient, node, comparison1, comparison2);
+                            ChangeValue(newPatient, node.LeftSon, comparison1, comparison2);
                         }
                         if (node.RightSon != null)
                         {
-                            ChangeValue(newPatient, node, comparison1, comparison2);
+                            ChangeValue(newPatient, node.RightSon, comparison1, comparison2);
                         }
                     }
                 }
