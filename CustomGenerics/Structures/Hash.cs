@@ -182,9 +182,9 @@ namespace CustomGenerics.Structures
         /// </summary>
         /// <param name="searchedKey"></param> The key that it is needed to search the element that it will be erased.
         /// <param name="multiplier"></param> Number used to establish the range used for the series
-        public void Delete(string searchedKey, int multiplier)
+        public void Delete(T value, string searchedKey, int multiplier)
         {
-            int code = GetCode(searchedKey, multiplier);
+            int code = GetCode(value, searchedKey, multiplier);
 
             while (HashTable[code] == null)
             {
@@ -240,6 +240,7 @@ namespace CustomGenerics.Structures
             code = (code * 7) % Length;
             return code;
         }
+
         /// <summary>
         /// Second get the code
         /// </summary>
@@ -248,9 +249,9 @@ namespace CustomGenerics.Structures
         private int GetCode(string Key, int Multiplier)
         {
             int code = Key.Length * 11 % (Multiplier*10);
-            while(code < Multiplier * 10 || code >= (Multiplier+1)*10)
+            while(code < Multiplier * 10)
             {
-                if(code >= (Multiplier + 1) * 10)
+                if(code >= (Multiplier * 10))
                 {
                     code -= 10;
                 }
@@ -268,6 +269,39 @@ namespace CustomGenerics.Structures
             }
             return code;
         }
+
+        private int GetCode(T value, string Key, int Multiplier)
+        {
+            int code = Key.Length * 11 % (Multiplier * 10);
+            while (code < Multiplier * 10)
+            {
+                if (code >= (Multiplier * 10))
+                {
+                    code -= 10;
+                }
+                else
+                {
+                    if (HashTable[code] != null)
+                    {
+                        if (HashTable[code].Value.CompareTo(value) == 0)
+                        {
+                            return code;
+                        }
+                        else
+                        {
+                            code += 1;
+                        }
+                    }
+                    else
+                    {
+                        return code;
+                    }
+                }
+            }
+            return code;
+        }
+
+
         /// <summary>
         /// Get a list of all nodes in the hash
         /// </summary>

@@ -304,11 +304,25 @@ namespace CustomGenerics.Structures
             }
             else if(comparison.Invoke(Patient, node.Patient) > 0)
             {
-                return Search(Patient, node.RightSon, comparison);
+                if (node.RightSon != null)
+                {
+                    return Search(Patient, node.RightSon, comparison);
+                }
+                else
+                {
+                    return new List<T>();
+                }
             }
             else
             {
-                return Search(Patient, node.LeftSon, comparison);
+                if (node.LeftSon != null)
+                {
+                    return Search(Patient, node.LeftSon, comparison);
+                }
+                else
+                {
+                    return new List<T>();
+                }
             }
         }
 

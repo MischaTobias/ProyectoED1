@@ -22,7 +22,7 @@ namespace ProyectoED1.Models
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            return this.Patient.CompareTo(((Bed)obj).Patient);
+            return this.Patient.CUI.CompareTo(((Bed)obj).Patient.CUI);
         }
 
         /// <summary>
