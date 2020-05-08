@@ -161,6 +161,17 @@ namespace ProyectoED1.Controllers
                     Priority = newPatient.Priority,
                     Status = newPatient.Status
                 };
+                foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
+                {
+                    if (patient.Value.Name == collection["Name"])
+                    {
+                        Storage.Instance.RepeatedNames.Add(patient.Value.Name);
+                    }
+                    if (patient.Value.LastName == collection["LastName"])
+                    {
+                        Storage.Instance.RepeatedLastNames.Add(patient.Value.LastName);
+                    }
+                }
                 Storage.Instance.PatientsHash.Insert(newPatient, newPatient.CUI);
                 Storage.Instance.PatientsByName.AddPatient(structurePatient, PatientStructure.CompareByName);
                 Storage.Instance.PatientsByLastName.AddPatient(structurePatient, PatientStructure.CompareByLastName);
@@ -287,15 +298,29 @@ namespace ProyectoED1.Controllers
                 {
                     case "Nombre":
                         patient.Name = search;
-                        list = Storage.Instance.PatientsByName.Search(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName);
+                        if (Storage.Instance.RepeatedNames.Contains(patient.Name))
+                        {
+                            list = Storage.Instance.PatientsByName.Search(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName);
+                        }
+                        else
+                        {
+                            list.Add(Storage.Instance.PatientsByName.Search(PatientStructure.CompareByName, patient, Storage.Instance.PatientsByName.Root).Patient);
+                        }
                         break;
                     case "Apellido":
                         patient.LastName = search;
-                        list = Storage.Instance.PatientsByLastName.Search(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName);
+                        if (Storage.Instance.RepeatedLastNames.Contains(patient.LastName))
+                        {
+                            list = Storage.Instance.PatientsByLastName.Search(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName);
+                        }
+                        else
+                        {
+                            list.Add(Storage.Instance.PatientsByLastName.Search(PatientStructure.CompareByLastName, patient, Storage.Instance.PatientsByLastName.Root).Patient);
+                        }
                             break;
                     case "CUI/No. DPI":
                         patient.CUI = search;
-                        list = Storage.Instance.PatientsByCUI.Search(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI);
+                        list.Add(Storage.Instance.PatientsByCUI.Search(PatientStructure.CompareByCUI, patient, Storage.Instance.PatientsByCUI.Root).Patient);
                         break;
                 }
             }

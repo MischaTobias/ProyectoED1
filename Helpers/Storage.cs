@@ -33,5 +33,7 @@ namespace ProyectoED1.Helpers
         public AVL<PatientStructure> PatientsByCUI = new AVL<PatientStructure>();
         public List<Hospital> Hospitals = new List<Hospital>();
         public Statistics CountryStatistics = new Statistics();
+        public List<string> RepeatedNames = new List<string>();
+        public List<string> RepeatedLastNames = new List<string>();
     }
 }
