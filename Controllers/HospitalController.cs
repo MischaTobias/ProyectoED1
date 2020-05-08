@@ -421,7 +421,7 @@ namespace ProyectoED1.Controllers
             }
             else if (hosp.BedFull())
             {
-                var patient = hosp.InfectedQueue.GetFirst().Patient;
+                var patient = hosp.SuspiciousQueue.GetFirst().Patient;
                 var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
                 if (infected)
                 {
