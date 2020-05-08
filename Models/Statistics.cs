@@ -38,7 +38,7 @@ namespace ProyectoED1.Models
         {
             if (Suspicious > 0)
             {
-                PositivePercentage = Math.Round((double)Infected / Suspicious, 3);
+                PositivePercentage = Math.Round(((double)Infected / Suspicious) * 100, 3);
             }
         }
     }
