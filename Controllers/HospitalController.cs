@@ -440,7 +440,16 @@ namespace ProyectoED1.Controllers
                             }
                         }
                         Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName });
+                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado contagiado." });
+                    }
+                    else
+                    {
+                        patient.Status = "NoInfectado";
+                        Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
+                        Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
+                        Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                        Storage.Instance.CountryStatistics.Suspicious--;
+                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
                     }
                 }
             }
@@ -481,10 +490,15 @@ namespace ProyectoED1.Controllers
                         }
                     }
                     Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName });
+                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado confirmado." });
                 }
                 else
                 {
+                    patient.Status = "NoInfectado";
+                    Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
+                    Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
+                    Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                    Storage.Instance.CountryStatistics.Suspicious--;
                     return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
                 }
             }
