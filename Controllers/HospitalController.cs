@@ -440,7 +440,7 @@ namespace ProyectoED1.Controllers
                             }
                         }
                         Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName });
+                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado contagiado." });
                     }
                     else
                     {
@@ -490,7 +490,7 @@ namespace ProyectoED1.Controllers
                         }
                     }
                     Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName });
+                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado confirmado." });
                 }
                 else
                 {
