@@ -112,14 +112,14 @@ namespace CustomGenerics.Structures
                     if (current.Priority > current.RightSon.Priority)
                     {
                         ChangeNodes(current.RightSon);
-                        OrderDowntoUp(current.RightSon);
+                        OrderUptoDown(current.RightSon);
                     }
                     else if (current.Priority == current.RightSon.Priority)
                     {
                         if (current.DatePriority > current.RightSon.DatePriority)
                         {
                             ChangeNodes(current.RightSon);
-                            OrderDowntoUp(current.RightSon);
+                            OrderUptoDown(current.RightSon);
                         }
                     }
                 }
@@ -128,14 +128,14 @@ namespace CustomGenerics.Structures
                     if (current.Priority > current.LeftSon.Priority)
                     {
                         ChangeNodes(current.LeftSon);
-                        OrderDowntoUp(current.LeftSon);
+                        OrderUptoDown(current.LeftSon);
                     }
                     else if (current.Priority == current.LeftSon.Priority)
                     {
                         if (current.DatePriority > current.LeftSon.DatePriority)
                         {
                             ChangeNodes(current.LeftSon);
-                            OrderDowntoUp(current.LeftSon);
+                            OrderUptoDown(current.LeftSon);
                         }
                     }
                 }
@@ -146,14 +146,14 @@ namespace CustomGenerics.Structures
                         if (current.Priority > current.RightSon.Priority)
                         {
                             ChangeNodes(current.RightSon);
-                            OrderDowntoUp(current.RightSon);
+                            OrderUptoDown(current.RightSon);
                         }
                         else if (current.Priority == current.RightSon.Priority)
                         {
                             if (current.DatePriority > current.RightSon.DatePriority)
                             {
                                 ChangeNodes(current.RightSon);
-                                OrderDowntoUp(current.RightSon);
+                                OrderUptoDown(current.RightSon);
                             }
                         }
                     }
@@ -162,14 +162,14 @@ namespace CustomGenerics.Structures
                         if (current.Priority > current.LeftSon.Priority)
                         {
                             ChangeNodes(current.LeftSon);
-                            OrderDowntoUp(current.LeftSon);
+                            OrderUptoDown(current.LeftSon);
                         }
                         else if (current.Priority == current.LeftSon.Priority)
                         {
                             if (current.DatePriority > current.LeftSon.DatePriority)
                             {
                                 ChangeNodes(current.LeftSon);
-                                OrderDowntoUp(current.LeftSon);
+                                OrderUptoDown(current.LeftSon);
                             }
                         }
                     }
@@ -180,14 +180,14 @@ namespace CustomGenerics.Structures
                 if (current.Priority > current.RightSon.Priority)
                 {
                     ChangeNodes(current.RightSon);
-                    OrderDowntoUp(current.RightSon);
+                    OrderUptoDown(current.RightSon);
                 }
                 else if (current.Priority == current.RightSon.Priority)
                 {
                     if (current.DatePriority > current.RightSon.DatePriority)
                     {
                         ChangeNodes(current.RightSon);
-                        OrderDowntoUp(current.RightSon);
+                        OrderUptoDown(current.RightSon);
                     }
                 }
             }
@@ -196,14 +196,14 @@ namespace CustomGenerics.Structures
                 if (current.Priority > current.LeftSon.Priority)
                 {
                     ChangeNodes(current.LeftSon);
-                    OrderDowntoUp(current.LeftSon);
+                    OrderUptoDown(current.LeftSon);
                 }
                 else if (current.Priority == current.LeftSon.Priority)
                 {
                     if (current.DatePriority > current.LeftSon.DatePriority)
                     {
                         ChangeNodes(current.LeftSon);
-                        OrderDowntoUp(current.LeftSon);
+                        OrderUptoDown(current.LeftSon);
                     }
                 }
             }
