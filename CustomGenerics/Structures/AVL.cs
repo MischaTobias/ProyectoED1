@@ -327,7 +327,34 @@ namespace CustomGenerics.Structures
         }
 
         /// <summary>
-        /// Search recursively the nodes
+        /// Looks up for the patient value throughout the tree in a recursive way.
+        /// </summary>
+        /// <param name="comparison"></param> comparison function
+        /// <param name="Patient"></param> searched value
+        /// <param name="node"></param> is first received as Root, then it's used as a reference value to go through the tree.
+        /// <returns></returns>
+        public AVLNode<T> Search(Comparison<T> comparison, T Patient, AVLNode<T> node)
+        {
+            if (node != null)
+            {
+                if (comparison.Invoke(Patient, node.Patient) < 0)
+                {
+                    return Search(comparison, Patient, node.LeftSon);
+                }
+                else if (comparison.Invoke(Patient, node.Patient) > 0)
+                {
+                    return Search(comparison, Patient, node.RightSon);
+                }
+                else
+                {
+                    return node;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the nodes recursively
         /// </summary>
         /// <param name="node"></param> Represents the node being evaluated
         /// <param name="Patient"></param> Represents the searched key.
