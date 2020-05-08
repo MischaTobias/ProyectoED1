@@ -114,7 +114,7 @@ namespace ProyectoED1.Controllers
                     ModelState.AddModelError("Name", "Por favor ingrese datos no numéricos en los campos pertinentes.");
                     return View("NewCase");
                 }
-                if (int.Parse(collection["Age"]) < 0)
+                if (int.Parse(collection["Age"]) < 0 || int.Parse(collection["Age"]) > 122)
                 {
                     ModelState.AddModelError("Age", "Por favor ingrese una edad válida");
                     return View("NewCase");
@@ -327,7 +327,7 @@ namespace ProyectoED1.Controllers
             }
             else
             {
-                foreach (var node in Storage.Instance.PatientsByCUI.GetList())
+                foreach (var node in Storage.Instance.PatientsByName.GetList())
                 {
                     list.Add(node.Patient);
                 }
