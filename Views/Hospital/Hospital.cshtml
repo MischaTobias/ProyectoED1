@@ -42,6 +42,9 @@
         <th>
             @Html.DisplayNameFor(Model => Model.BedList.First().Patient.Name)
         </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.BedList.First().Patient.LastName)
+        </th>
         <th></th>
     </tr>
 
@@ -57,6 +60,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Patient.Name)
             </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.Patient.LastName)
+            </th>
             <td>
                 @Html.ActionLink("Cambiar a Recuperado", "GetRecovered", new { code = item.Patient.CUI })
                 @* Sends the bed as a parameter to GetRecovered() *@
