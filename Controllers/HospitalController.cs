@@ -549,6 +549,8 @@ namespace ProyectoED1.Controllers
             var Patient = new PatientStructure() { CUI = code };
             Patient = Storage.Instance.PatientsByCUI.Search(Patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI).First();
             Storage.Instance.BedHash.Delete(new Bed() { Availability = "No Disponible", Patient = Patient }, Patient.CUI, GetMultiplier(Patient.Hospital));
+            Patient.Status = "Recuperado";
+            Patient.IsInfected = false;
             Storage.Instance.PatientsHash.Search(Patient.CUI).Value.Status = "Recuperado";
             Storage.Instance.PatientsHash.Search(Patient.CUI).Value.IsInfected = false;
             Storage.Instance.PatientsByCUI.ChangeValue(Patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
