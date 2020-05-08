@@ -13,7 +13,7 @@ namespace ProyectoED1.Models
         /// </summary>
         [Display(Name = "Departamento")]
         public string Department { get; set; }
-        [Display(Name = "Municipalidad")]
+        [Display(Name = "Municipio")]
         public string Municipality { get; set; }
         [Display(Name = "Síntomas")]
         public string Symptoms { get; set; } 

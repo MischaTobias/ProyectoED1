@@ -109,13 +109,20 @@ namespace ProyectoED1.Controllers
         {
             try
             {
+                if (HasIncorrectCharacter(collection["Name"]) || HasIncorrectCharacter(collection["LastName"]) || HasIncorrectCharacter(collection["Municipality"]) || HasIncorrectCharacter(collection["Symptoms"]) || HasIncorrectCharacter(collection["InfectionDescription"]))
+                {
+                    ModelState.AddModelError("Name", "Por favor ingrese datos no numéricos en los campos pertinentes.");
+                    return View("NewCase");
+                }
                 if (int.Parse(collection["Age"]) < 0)
                 {
                     ModelState.AddModelError("Age", "Por favor ingrese una edad válida");
+                    return View("NewCase");
                 }
                 else if (collection["Department"] == "Seleccionar Departamento")
                 {
                     ModelState.AddModelError("Department", "Por favor seleccione un departamento");
+                    return View("NewCase");
                 }
                 foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
                 {
@@ -166,6 +173,19 @@ namespace ProyectoED1.Controllers
             {
                 ModelState.AddModelError("InfectionDescription", "Por favor asegúrese de haber llenado todos los campos correctamente.");
                 return View("NewCase");
+            }
+        }
+
+        private bool HasIncorrectCharacter(string data)
+        {
+            try
+            {
+                var num = int.Parse(data);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -237,6 +257,10 @@ namespace ProyectoED1.Controllers
             else
             {
                 patientsList = GetPatients(search, criteria);
+            }
+            if (patientsList.Count == 0)
+            {
+                TempData["Error"] = "No se ha encontrado ningún paciente que coincida con los datos ingresados.";
             }
             return View(patientsList.ToPagedList(pageNumber, pageSize));
         }
@@ -419,7 +443,7 @@ namespace ProyectoED1.Controllers
             {
                 if (hosp.SuspiciousQueue.Root == null)
                 {
-                    return RedirectToAction("Hospital");
+                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "No hay pacientes esperando para realizar la prueba." });
                 }
                 var patient = hosp.SuspiciousQueue.GetFirst().Patient;
                 var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
@@ -469,17 +493,28 @@ namespace ProyectoED1.Controllers
         /// </summary>
         /// <param name="bed"></param> bed that has been selected to set empty.
         /// <returns></returns>
-        public ActionResult GetRecovered(PatientStructure Patient)
+        public ActionResult GetRecovered(string code)
         {
-            Patient.IsInfected = false;
-            Patient.Status = "Recuperado";
-            Storage.Instance.BedHash.Delete(Patient.CUI, GetMultiplier(Patient.Hospital));
+            var Patient = new PatientStructure() { CUI = code };
+            Patient = Storage.Instance.PatientsByCUI.Search(Patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI).First();
+            Storage.Instance.BedHash.Delete(new Bed() { Availability = "No Disponible", Patient = Patient }, Patient.CUI, GetMultiplier(Patient.Hospital));
             Storage.Instance.PatientsHash.Search(Patient.CUI).Value.Status = "Recuperado";
             Storage.Instance.PatientsHash.Search(Patient.CUI).Value.IsInfected = false;
             Storage.Instance.PatientsByCUI.ChangeValue(Patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
             Storage.Instance.PatientsByName.ChangeValue(Patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
             Storage.Instance.PatientsByLastName.ChangeValue(Patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
             Storage.Instance.CountryStatistics.Infected--;
+            Storage.Instance.CountryStatistics.Recovered++;
+            Storage.Instance.Hospitals.First(x => x.HospitalName == Patient.Hospital).BedList = new List<Bed>();
+            for (int i = 0; i < 10; i++)
+            {
+                var node = Storage.Instance.BedHash.GetT(i, GetMultiplier(Patient.Hospital));
+                if (node != null)
+                {
+                    Storage.Instance.Hospitals.First(x => x.HospitalName == Patient.Hospital).BedList.Add(node.Value);
+                }
+            }
+            Storage.Instance.Hospitals.First(x => x.HospitalName == Patient.Hospital).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == Patient.Hospital).BedList.Count();
             return RedirectToAction("Hospital", new { name = Patient.Hospital });
         }
 

@@ -15,7 +15,7 @@ namespace ProyectoED1.Models
         public int Infected { get; set; }
         [Display(Name = "Sospechosos")]
         public int Suspicious { get; set; }
-        [Display(Name = "Sospechosos positivos")]
+        [Display(Name = "Porcentage de Sospechosos Positivos")]
         public double PositivePercentage { get; set; }
         [Display(Name = "Cantidad de Egresados")]
         public int Recovered { get; set; }
@@ -36,7 +36,10 @@ namespace ProyectoED1.Models
         /// </summary>
         public void GetPercentage()
         {
-            PositivePercentage = Infected / Suspicious;
+            if (Suspicious > 0)
+            {
+                PositivePercentage = Math.Round((double)Infected / Suspicious, 3);
+            }
         }
     }
 }
