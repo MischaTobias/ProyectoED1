@@ -176,6 +176,11 @@ namespace ProyectoED1.Controllers
             }
         }
 
+        /// <summary>
+        /// If the string has a number, returns true, else, returns false.
+        /// </summary>
+        /// <param name="data"></param> represents string input by user
+        /// <returns></returns>
         private bool HasIncorrectCharacter(string data)
         {
             try

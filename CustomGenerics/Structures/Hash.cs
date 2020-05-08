@@ -91,6 +91,7 @@ namespace CustomGenerics.Structures
                 HashTable[code] = T1;
             }
         }
+
         /// <summary>
         /// Function that searches an object in the hash
         /// </summary>
@@ -139,6 +140,7 @@ namespace CustomGenerics.Structures
             return HashTable[code];
             
         }
+
         /// <summary>
         /// Second type to search
         /// </summary>
@@ -177,6 +179,7 @@ namespace CustomGenerics.Structures
                 return null;
             }
         }
+
         /// <summary>
         /// Delete function
         /// </summary>
@@ -227,7 +230,7 @@ namespace CustomGenerics.Structures
         /// <summary>
         /// Get the code to insert the node in the hash
         /// </summary>
-        /// <param name="Key"></param> The key that it will used to get the code
+        /// <param name="Key"></param> The key that it will be used to get the code
         /// <returns></returns>
         private int GetCode(string Key)
         {
@@ -244,7 +247,7 @@ namespace CustomGenerics.Structures
         /// <summary>
         /// Second get the code
         /// </summary>
-        /// <param name="Key"></param> The key that it will used to get the code
+        /// <param name="Key"></param> The key that it will be used to get the code
         /// <param name="Multiplier"></param> Number used to establish the range used for the series
         private int GetCode(string Key, int Multiplier)
         {
@@ -270,6 +273,13 @@ namespace CustomGenerics.Structures
             return code;
         }
 
+        /// <summary>
+        /// Looks up for the T value received and then returns its position in the array.
+        /// </summary>
+        /// <param name="value"></param> represents the searched value
+        /// <param name="Key"></param> represents the key that gives access to a position in the array in which the value should be.
+        /// <param name="Multiplier"></param> reduces the section in which the value is searched throughout the array.
+        /// <returns></returns>
         private int GetCode(T value, string Key, int Multiplier)
         {
             int code = Key.Length * 11 % (Multiplier * 10);
@@ -320,6 +330,7 @@ namespace CustomGenerics.Structures
             }
             return returnList;
         }
+
         /// <summary>
         /// Get a list of items that fulfill a condition
         /// </summary>
@@ -344,6 +355,12 @@ namespace CustomGenerics.Structures
             return FiltedList;
         }
 
+        /// <summary>
+        /// Returns the value in the position given.
+        /// </summary>
+        /// <param name="pos"></param> int of the key position.
+        /// <param name="block"></param> int that represents the section of values which are going to be returned.
+        /// <returns></returns>
         public HashNode<T> GetT(int pos, int block)
         {
             return HashTable[pos + block];

@@ -392,6 +392,13 @@ namespace CustomGenerics.Structures
 
         } 
 
+        /// <summary>
+        /// Changes a node value with the parameter obtained.
+        /// </summary>
+        /// <param name="newPatient"></param> Parameter that is sent to change the node's value.
+        /// <param name="node"></param> Node that is recieved as the root first and then is used as a reference value to go through the tree.
+        /// <param name="comparison1"></param> represents the first comparison criteria.
+        /// <param name="comparison2"></param> represents the second comparison criteria.
         public void ChangeValue(T newPatient, AVLNode<T> node, Comparison<T> comparison1, Comparison<T> comparison2)
         {
             if (node != null)

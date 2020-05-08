@@ -325,8 +325,9 @@ namespace CustomGenerics.Structures
         {
             return this.MemberwiseClone();
         }
+
         /// <summary>
-        /// IEnumerator implemetion 
+        /// IEnumerator implementation 
         /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
@@ -339,6 +340,10 @@ namespace CustomGenerics.Structures
             }
         }
 
+        /// <summary>
+        /// IEnumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
